@@ -11,6 +11,10 @@
 |
 */
 
+use Tests\Helpers\AuthHelper;
+use Tests\Helpers\ModelBuilderHelper;
+use Tests\Helpers\RouteBuilderHelper;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -39,7 +43,26 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * @return AuthHelper
+ */
+function authHelper(): AuthHelper
 {
-    // ..
+    return AuthHelper::getInstance(modelBuilderHelper());
+}
+
+/**
+ * @return ModelBuilderHelper
+ */
+function modelBuilderHelper(): ModelBuilderHelper
+{
+    return ModelBuilderHelper::getInstance();
+}
+
+/**
+ * @return RouteBuilderHelper
+ */
+function routeBuilderHelper(): RouteBuilderHelper
+{
+    return RouteBuilderHelper::getInstance();
 }
