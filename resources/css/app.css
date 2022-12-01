@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-page {
+    background-color: #f5f6f9;
+}
+
+.bg-header {
+    background-color: #FFF;
+}
+
+body,
+button {
+    color: #222;
+}
+
+.text-muted {
+    color: rgba(0, 0, 0, 0.3);
+}

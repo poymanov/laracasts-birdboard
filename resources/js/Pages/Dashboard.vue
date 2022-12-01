@@ -1,22 +1,17 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
-                </div>
+    <BreezeAuthenticatedLayout>
+        <header class="flex items-center mb-3 pb-4">
+            <div class="flex justify-between items-end w-full">
+                <h2 class="text-muted text-base font-light">My Projects</h2>
             </div>
-        </div>
-    </AuthenticatedLayout>
+        </header>
+
+        <main class="lg:flex lg:flex-wrap">
+            <div>No projects yet.</div>
+        </main>
+    </BreezeAuthenticatedLayout>
 </template>
