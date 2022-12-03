@@ -11,4 +11,14 @@ class ProjectBuilder
     {
         return '/projects';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function update(string $id): string
+    {
+        return '/projects/' . $id;
+    }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba5f8b814b908d98fed4e4e610a94684",
+    "content-hash": "972b06f87fc342af84dfed1dc7ba785a",
     "packages": [
         {
             "name": "brick/math",
@@ -1749,6 +1749,246 @@
             "time": "2022-04-17T13:12:02+00:00"
         },
         {
+            "name": "michael-rubel/laravel-enhanced-container",
+            "version": "10.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michael-rubel/laravel-enhanced-container.git",
+                "reference": "a9c7e6c755589bfd283a64c2f624b623f286001c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michael-rubel/laravel-enhanced-container/zipball/a9c7e6c755589bfd283a64c2f624b623f286001c",
+                "reference": "a9c7e6c755589bfd283a64c2f624b623f286001c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.3",
+                "laravel/pint": "^0.2.1",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^1.0",
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "^9.5",
+                "roave/backward-compatibility-check": "^7.0|^8.0",
+                "roave/infection-static-analysis-plugin": "^1.25"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MichaelRubel\\EnhancedContainer\\LecServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/helpers.php",
+                    "src/Overrides/Container.php",
+                    "src/Overrides/BoundMethod.php"
+                ],
+                "psr-4": {
+                    "MichaelRubel\\EnhancedContainer\\": "src"
+                },
+                "exclude-from-classmap": [
+                    "vendor/laravel/framework/src/Illuminate/Container/Container.php",
+                    "vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Rubel",
+                    "email": "contact@observer.name",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This package provides DX tweaks for Service Container in Laravel.",
+            "homepage": "https://github.com/michael-rubel/laravel-enhanced-container",
+            "keywords": [
+                "laravel",
+                "laravel-enhanced-container",
+                "lec",
+                "michael-rubel"
+            ],
+            "support": {
+                "issues": "https://github.com/michael-rubel/laravel-enhanced-container/issues",
+                "source": "https://github.com/michael-rubel/laravel-enhanced-container/tree/10.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.com/donate/?hosted_button_id=KHLEL8PFS4AXJ",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-11-22T06:56:06+00:00"
+        },
+        {
+            "name": "michael-rubel/laravel-formatters",
+            "version": "7.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michael-rubel/laravel-formatters.git",
+                "reference": "135a3200894e86da875584e323a38816b0c4ae34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michael-rubel/laravel-formatters/zipball/135a3200894e86da875584e323a38816b0c4ae34",
+                "reference": "135a3200894e86da875584e323a38816b0c4ae34",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "illuminate/contracts": "^9.7",
+                "michael-rubel/laravel-enhanced-container": "^10.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.12"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.3",
+                "laravel/pint": "^1.1",
+                "mockery/mockery": "^1.4.4",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.2",
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "^9.5",
+                "roave/backward-compatibility-check": "^7.0|^8.0",
+                "roave/infection-static-analysis-plugin": "^1.25"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MichaelRubel\\Formatters\\FormatterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "MichaelRubel\\Formatters\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Rubel",
+                    "email": "contact@observer.name",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This package is a collection of classes you can use to standardize data formats in your Laravel application. It uses the Service Container to easily extend or override the formatter classes.",
+            "homepage": "https://github.com/michael-rubel/laravel-formatters",
+            "keywords": [
+                "laravel",
+                "laravel-formatters",
+                "michael-rubel"
+            ],
+            "support": {
+                "issues": "https://github.com/michael-rubel/laravel-formatters/issues",
+                "source": "https://github.com/michael-rubel/laravel-formatters/tree/7.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.com/donate/?hosted_button_id=KHLEL8PFS4AXJ",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-12-02T11:56:13+00:00"
+        },
+        {
+            "name": "michael-rubel/laravel-value-objects",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michael-rubel/laravel-value-objects.git",
+                "reference": "57ee5ad5152cce1b65aca97059c7dfade4dff5b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michael-rubel/laravel-value-objects/zipball/57ee5ad5152cce1b65aca97059c7dfade4dff5b4",
+                "reference": "57ee5ad5152cce1b65aca97059c7dfade4dff5b4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.7",
+                "michael-rubel/laravel-formatters": "^6.3|^7.0",
+                "php": "^8.0",
+                "phpmath/bignumber": "^1.2",
+                "spatie/laravel-package-tools": "^1.12"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.3",
+                "laravel/pint": "^1.2",
+                "mockery/mockery": "^1.4.4",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.2",
+                "orchestra/testbench": "^7.4",
+                "pestphp/pest": "^1.16",
+                "pestphp/pest-plugin-global-assertions": "^1.0",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "pestphp/pest-plugin-mock": "^1.0",
+                "pestphp/pest-plugin-parallel": "^0.2.0",
+                "phpunit/phpunit": "^9.5",
+                "roave/backward-compatibility-check": "^7.0|^8.0",
+                "roave/infection-static-analysis-plugin": "^1.25"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MichaelRubel\\ValueObjects\\ValueObjectServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MichaelRubel\\ValueObjects\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Rubél",
+                    "email": "contact@observer.name",
+                    "role": "Author"
+                }
+            ],
+            "description": "It is an example template for Laravel packages. Fill or change it the way you like.",
+            "homepage": "https://github.com/michael-rubel/laravel-value-objects",
+            "keywords": [
+                "laravel",
+                "laravel-value-objects",
+                "michael-rubel"
+            ],
+            "support": {
+                "issues": "https://github.com/michael-rubel/laravel-value-objects/issues",
+                "source": "https://github.com/michael-rubel/laravel-value-objects/tree/4.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.com/donate/?hosted_button_id=KHLEL8PFS4AXJ",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-11-23T13:07:27+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.8.0",
             "source": {
@@ -2240,6 +2480,55 @@
                 }
             ],
             "time": "2022-10-28T22:51:32+00:00"
+        },
+        {
+            "name": "phpmath/bignumber",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpmath/bignumber.git",
+                "reference": "b11b3c228cc64256442f803b4a6210fc45a8706c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpmath/bignumber/zipball/b11b3c228cc64256442f803b4a6210fc45a8706c",
+                "reference": "b11b3c228cc64256442f803b4a6210fc45a8706c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHP\\Math\\BigNumber\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Walter Tamboer",
+                    "homepage": "http://www.waltertamboer.nl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP library to work with big numbers.",
+            "keywords": [
+                "bignumber",
+                "math"
+            ],
+            "support": {
+                "issues": "https://github.com/phpmath/bignumber/issues",
+                "source": "https://github.com/phpmath/bignumber/tree/master"
+            },
+            "time": "2016-06-14T20:51:46+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -3041,6 +3330,66 @@
                 }
             ],
             "time": "2022-11-05T23:03:38+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.13.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "4af8e608184471b5568af6265ebb0ca0025c131a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/4af8e608184471b5568af6265ebb0ca0025c131a",
+                "reference": "4af8e608184471b5568af6265ebb0ca0025c131a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.13.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-11-15T09:10:09+00:00"
         },
         {
             "name": "symfony/console",

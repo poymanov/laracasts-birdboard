@@ -41,7 +41,6 @@ test('failed', function () {
     $this
         ->from(routeBuilderHelper()->common->dashboard())
         ->post(routeBuilderHelper()->project->store(), $projectData->toArray())
-        ->assertSessionDoesntHaveErrors()
         ->assertSessionHas('alert.error')
         ->assertRedirect(routeBuilderHelper()->common->dashboard());
 

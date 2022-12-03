@@ -18,7 +18,6 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'uuid'        => $this->faker->uuid,
             'owner_id'    => User::factory(),
             'title'       => $this->faker->sentence,
             'description' => $this->faker->text,

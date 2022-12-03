@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache git unzip php-intl icu-dev bash freetype-de
     && git clone --branch $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/src/php/ext/xdebug \
     && docker-php-ext-configure xdebug --enable-xdebug-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install mysqli pdo pdo_pgsql intl gd xdebug redis \
+    && docker-php-ext-install mysqli pdo pdo_pgsql intl gd xdebug redis bcmath \
     && apk del git
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini

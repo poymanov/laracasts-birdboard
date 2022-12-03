@@ -7,7 +7,7 @@ use App\Models\Project;
 class ProjectBuilder
 {
     /**
-     * Подготовка сущности сущности{@see Project}
+     * Подготовка сущности {@see Project}
      *
      * @param array $params Параметры нового объекта
      *
@@ -16,5 +16,17 @@ class ProjectBuilder
     public function make(array $params = []): Project
     {
         return Project::factory()->make($params);
+    }
+
+    /**
+     * Создание сущности {@see Project}
+     *
+     * @param array $params Параметры нового объекта
+     *
+     * @return Project
+     */
+    public function create(array $params = []): Project
+    {
+        return Project::factory()->createOne($params);
     }
 }

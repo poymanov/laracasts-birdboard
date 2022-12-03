@@ -2,25 +2,40 @@
 
 namespace App\Services\Project;
 
-use App\Services\Project\Contracts\ProjectCreateDtoFactoryContract;
 use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
+use App\Services\Project\Dtos\ProjectCreateDto;
+use App\Services\Project\Dtos\ProjectUpdateDto;
+use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class ProjectService implements ProjectServiceContract
 {
     public function __construct(
-        private readonly ProjectRepositoryContract $projectRepository,
-        private readonly ProjectCreateDtoFactoryContract $projectCreateDtoFactoryContract
+        private readonly ProjectRepositoryContract $projectRepository
     ) {
     }
 
     /**
      * @inheritDoc
      */
-    public function create(string $title, string $description, int $ownerId): void
+    public function create(ProjectCreateDto $projectCreateDto): void
     {
-        $projectCreateDto = $this->projectCreateDtoFactoryContract->createFromParams($title, $description, $ownerId);
-
         $this->projectRepository->create($projectCreateDto);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function update(Uuid $id, ProjectUpdateDto $projectUpdateDto): void
+    {
+        $this->projectRepository->update($id, $projectUpdateDto);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isBelongsToUser(int $userId, Uuid $projectId): bool
+    {
+        return $this->projectRepository->isBelongsToUser($userId, $projectId);
     }
 }
