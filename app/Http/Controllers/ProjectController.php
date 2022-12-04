@@ -8,6 +8,7 @@ use App\Services\Project\Contracts\ProjectCreateDtoFactoryContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\Project\Contracts\ProjectUpdateDtoFactoryContract;
 use App\Services\Project\Exceptions\ProjectCreateFailedException;
+use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
 use Illuminate\Http\RedirectResponse;
@@ -72,6 +73,32 @@ class ProjectController extends Controller
         } catch (ProjectNotFoundException) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (ProjectUpdateFailedException $e) {
+            return redirect()->back()->with('alert.error', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return RedirectResponse|void
+     */
+    public function destroy(string $id)
+    {
+        $projectId = Uuid::make($id);
+
+        $this->checkBelongsToUser($projectId);
+
+        try {
+            $this->projectService->delete($projectId);
+
+            return redirect()->route('dashboard')->with('alert.success', 'Project was deleted');
+        } catch (ProjectNotFoundException) {
+            abort(Response::HTTP_NOT_FOUND);
+        } catch (ProjectDeleteFailedException $e) {
             return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
             Log::error($e);

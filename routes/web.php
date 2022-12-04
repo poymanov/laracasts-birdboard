@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     ], function () {
         Route::post('', 'store')->name('store');
         Route::patch('{id}', 'update')->name('update');
+        Route::delete('{id}', 'destroy')->name('destroy');
     });
 });
 

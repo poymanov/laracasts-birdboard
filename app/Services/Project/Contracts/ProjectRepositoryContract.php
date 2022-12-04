@@ -5,6 +5,7 @@ namespace App\Services\Project\Contracts;
 use App\Services\Project\Dtos\ProjectCreateDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
 use App\Services\Project\Exceptions\ProjectCreateFailedException;
+use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
@@ -30,6 +31,17 @@ interface ProjectRepositoryContract
      * @throws ProjectUpdateFailedException
      */
     public function update(Uuid $id, ProjectUpdateDto $projectUpdateDto): void;
+
+    /**
+     * Удаление проекта
+     *
+     * @param Uuid $id
+     *
+     * @return void
+     * @throws ProjectDeleteFailedException
+     * @throws ProjectNotFoundException
+     */
+    public function delete(Uuid $id): void;
 
     /**
      * Принадлежит ли проект пользователю

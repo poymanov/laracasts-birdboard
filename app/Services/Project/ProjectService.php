@@ -34,6 +34,14 @@ class ProjectService implements ProjectServiceContract
     /**
      * @inheritDoc
      */
+    public function delete(Uuid $id): void
+    {
+        $this->projectRepository->delete($id);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isBelongsToUser(int $userId, Uuid $projectId): bool
     {
         return $this->projectRepository->isBelongsToUser($userId, $projectId);

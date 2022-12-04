@@ -21,4 +21,14 @@ class ProjectBuilder
     {
         return '/projects/' . $id;
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function delete(string $id): string
+    {
+        return '/projects/' . $id;
+    }
 }

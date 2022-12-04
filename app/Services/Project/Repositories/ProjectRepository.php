@@ -7,6 +7,7 @@ use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Dtos\ProjectCreateDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
 use App\Services\Project\Exceptions\ProjectCreateFailedException;
+use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
@@ -39,6 +40,18 @@ class ProjectRepository implements ProjectRepositoryContract
 
         if (!$project->save()) {
             throw new ProjectUpdateFailedException($id);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(Uuid $id): void
+    {
+        $project = $this->findModelById($id);
+
+        if (!$project->delete()) {
+            throw new ProjectDeleteFailedException($id);
         }
     }
 
