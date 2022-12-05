@@ -14,6 +14,7 @@ use App\Services\Project\Exceptions\ProjectUpdateFailedException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 use Throwable;
 
@@ -105,6 +106,14 @@ class ProjectController extends Controller
 
             return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
         }
+    }
+
+    /**
+     * @return \Inertia\Response
+     */
+    public function create()
+    {
+        return Inertia::render('Project/Create');
     }
 
     /**

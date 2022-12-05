@@ -18,3 +18,7 @@ button {
 .text-muted {
     color: rgba(0, 0, 0, 0.3);
 }
+
+.button {
+    box-shadow: 0 2px 7px 0 #b0eaff;
+}

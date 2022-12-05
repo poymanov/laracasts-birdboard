@@ -2,6 +2,8 @@
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
+import FlashMessages from '@/Components/FlashMessages.vue';
+import { Link } from '@inertiajs/inertia-vue3';
 </script>
 
 <template>
@@ -10,9 +12,9 @@ import BreezeDropdownLink from '@/Components/DropdownLink.vue';
             <div class="container mx-auto">
                 <div class="flex justify-between items-center py-1">
                     <h1>
-                        <a class="navbar-brand" :href="route('dashboard')">
+                        <Link class="navbar-brand" :href="route('dashboard')">
                             <BreezeApplicationLogo />
-                        </a>
+                        </Link>
                     </h1>
 
                     <div>
@@ -47,6 +49,7 @@ import BreezeDropdownLink from '@/Components/DropdownLink.vue';
             </div>
         </nav>
         <div class="section">
+            <FlashMessages />
             <main class="container mx-auto py-6">
                 <slot />
             </main>
