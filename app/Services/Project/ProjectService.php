@@ -46,4 +46,12 @@ class ProjectService implements ProjectServiceContract
     {
         return $this->projectRepository->isBelongsToUser($userId, $projectId);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByOwnerId(int $ownerId): array
+    {
+        return $this->projectRepository->findAllByOwnerId($ownerId);
+    }
 }

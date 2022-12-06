@@ -3,6 +3,7 @@
 namespace App\Services\Project\Contracts;
 
 use App\Services\Project\Dtos\ProjectCreateDto;
+use App\Services\Project\Dtos\ProjectDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
 use App\Services\Project\Exceptions\ProjectCreateFailedException;
 use App\Services\Project\Exceptions\ProjectDeleteFailedException;
@@ -54,4 +55,11 @@ interface ProjectServiceContract
      * @return bool
      */
     public function isBelongsToUser(int $userId, Uuid $projectId): bool;
+
+    /**
+     * Получение списка проектов по ID владельца
+     *
+     * @return ProjectDto[]
+     */
+    public function findAllByOwnerId(int $ownerId): array;
 }

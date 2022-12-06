@@ -3,6 +3,7 @@
 namespace App\Services\Project\Repositories;
 
 use App\Models\Project;
+use App\Services\Project\Contracts\ProjectDtoFactoryContract;
 use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Dtos\ProjectCreateDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
@@ -14,6 +15,10 @@ use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class ProjectRepository implements ProjectRepositoryContract
 {
+    public function __construct(private readonly ProjectDtoFactoryContract $projectDtoFactory)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -61,6 +66,14 @@ class ProjectRepository implements ProjectRepositoryContract
     public function isBelongsToUser(int $userId, Uuid $projectId): bool
     {
         return Project::where(['id' => $projectId->value(), 'owner_id' => $userId])->exists();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByOwnerId(int $ownerId): array
+    {
+        return $this->projectDtoFactory->createFromModelsList(Project::whereOwnerId($ownerId)->get());
     }
 
     /**
