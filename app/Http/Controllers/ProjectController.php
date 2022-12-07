@@ -117,6 +117,28 @@ class ProjectController extends Controller
     }
 
     /**
+     * @param string $id
+     *
+     * @return RedirectResponse|\Inertia\Response|void
+     */
+    public function show(string $id)
+    {
+        $projectId = Uuid::make($id);
+
+        try {
+            $projectDto = $this->projectService->findOneById($projectId);
+
+            return Inertia::render('Project/Show', ['project' => $projectDto]);
+        } catch (ProjectNotFoundException $e) {
+            abort(Response::HTTP_NOT_FOUND);
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
      * @param Uuid $projectId
      *
      * @return void

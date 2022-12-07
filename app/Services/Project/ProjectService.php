@@ -5,6 +5,7 @@ namespace App\Services\Project;
 use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\Project\Dtos\ProjectCreateDto;
+use App\Services\Project\Dtos\ProjectDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
@@ -53,5 +54,13 @@ class ProjectService implements ProjectServiceContract
     public function findAllByOwnerId(int $ownerId): array
     {
         return $this->projectRepository->findAllByOwnerId($ownerId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findOneById(Uuid $id): ProjectDto
+    {
+        return $this->projectRepository->findOneById($id);
     }
 }

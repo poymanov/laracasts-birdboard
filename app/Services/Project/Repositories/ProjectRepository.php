@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Services\Project\Contracts\ProjectDtoFactoryContract;
 use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Dtos\ProjectCreateDto;
+use App\Services\Project\Dtos\ProjectDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
 use App\Services\Project\Exceptions\ProjectCreateFailedException;
 use App\Services\Project\Exceptions\ProjectDeleteFailedException;
@@ -73,7 +74,18 @@ class ProjectRepository implements ProjectRepositoryContract
      */
     public function findAllByOwnerId(int $ownerId): array
     {
-        return $this->projectDtoFactory->createFromModelsList(Project::whereOwnerId($ownerId)->get());
+        return $this->projectDtoFactory
+            ->createFromModelsList(
+                Project::whereOwnerId($ownerId)->latest('updated_at')->get()
+            );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findOneById(Uuid $id): ProjectDto
+    {
+        return $this->projectDtoFactory->createFromModel($this->findModelById($id));
     }
 
     /**

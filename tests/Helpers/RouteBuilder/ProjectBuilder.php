@@ -31,4 +31,14 @@ class ProjectBuilder
     {
         return '/projects/' . $id;
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function show(string $id): string
+    {
+        return '/projects/' . $id;
+    }
 }

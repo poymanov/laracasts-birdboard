@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         'as'         => 'projects.',
         'controller' => ProjectController::class,
     ], function () {
+        Route::get('{id}', 'show')->name('show');
         Route::get('create', 'create')->name('create');
         Route::post('', 'store')->name('store');
         Route::patch('{id}', 'update')->name('update');

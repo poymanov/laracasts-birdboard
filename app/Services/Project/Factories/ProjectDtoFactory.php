@@ -19,7 +19,7 @@ class ProjectDtoFactory implements ProjectDtoFactoryContract
         $projectDto->id               = $project->id;
         $projectDto->ownerId          = $project->owner_id;
         $projectDto->title            = $project->title;
-        $projectDto->shortDescription = Str::limit($project->description, 100);
+        $projectDto->shortDescription = Str::limit($project->description);
         $projectDto->description      = $project->description;
         $projectDto->createdAt        = $project->created_at?->toDateTime();
         $projectDto->updateAt         = $project->updated_at?->toDateTime();

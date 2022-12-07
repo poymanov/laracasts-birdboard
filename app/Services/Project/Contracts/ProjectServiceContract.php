@@ -62,4 +62,14 @@ interface ProjectServiceContract
      * @return ProjectDto[]
      */
     public function findAllByOwnerId(int $ownerId): array;
+
+    /**
+     * Получение DTO объекта по id
+     *
+     * @param Uuid $id
+     *
+     * @return ProjectDto
+     * @throws ProjectNotFoundException
+     */
+    public function findOneById(Uuid $id): ProjectDto;
 }
