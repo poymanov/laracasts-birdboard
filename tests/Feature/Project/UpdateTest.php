@@ -84,7 +84,7 @@ test('success', function () {
         ->from(routeBuilderHelper()->common->dashboard())
         ->patch(routeBuilderHelper()->project->update($project->id), $updateProjectData->toArray());
     $response->assertSessionDoesntHaveErrors();
-    $response->assertRedirect(routeBuilderHelper()->common->dashboard());
+    $response->assertRedirect(routeBuilderHelper()->project->show($project->id));
 
     $this->assertDatabaseHas('projects', [
         'title'       => $updateProjectData->title,

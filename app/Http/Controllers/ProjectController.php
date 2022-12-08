@@ -54,6 +54,30 @@ class ProjectController extends Controller
     }
 
     /**
+     * @param string $id
+     *
+     * @return RedirectResponse|\Inertia\Response
+     */
+    public function edit(string $id)
+    {
+        $projectId = Uuid::make($id);
+
+        $this->checkBelongsToUser($projectId);
+
+        try {
+            $project = $this->projectService->findOneById($projectId);
+
+            return Inertia::render('Project/Edit', compact('project'));
+        } catch (ProjectNotFoundException $e) {
+            return redirect()->back()->with('alert.error', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
      * @param string        $id
      * @param UpdateRequest $request
      *
@@ -70,7 +94,7 @@ class ProjectController extends Controller
 
             $this->projectService->update($projectId, $projectUpdateDto);
 
-            return redirect()->route('dashboard')->with('alert.success', 'Project was updated');
+            return redirect()->route('projects.show', $id)->with('alert.success', 'Project was updated');
         } catch (ProjectNotFoundException) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (ProjectUpdateFailedException $e) {

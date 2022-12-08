@@ -41,4 +41,14 @@ class ProjectBuilder
     {
         return '/projects/' . $id;
     }
+
+    /**
+     * @param string $uuid
+     *
+     * @return string
+     */
+    public function edit(string $id): string
+    {
+        return '/projects/' . $id . '/edit';
+    }
 }
