@@ -7,6 +7,14 @@ class ProjectBuilder
     /**
      * @return string
      */
+    public function create(): string
+    {
+        return '/projects/create';
+    }
+
+    /**
+     * @return string
+     */
     public function store(): string
     {
         return '/projects';
