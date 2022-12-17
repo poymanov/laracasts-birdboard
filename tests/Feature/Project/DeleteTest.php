@@ -60,6 +60,7 @@ test('success', function () {
         ->assertRedirect(routeBuilderHelper()->common->dashboard());
 
     $this->assertDatabaseMissing('projects', [
-        'id' => $project->id,
+        'id'         => $project->id,
+        'deleted_at' => null,
     ]);
 });

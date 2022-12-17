@@ -2,6 +2,7 @@
 import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head} from '@inertiajs/inertia-vue3';
 import Form from '@/Components/Project/Form.vue';
+import DeleteButton from '@/Components/Project/DeleteButton.vue';
 
 const props = defineProps({
     project: Object,
@@ -23,6 +24,7 @@ const props = defineProps({
                 :cancel-url="route('projects.show', project.id)"
                 :submit-url="route('projects.update', project.id)"
             />
+            <DeleteButton :project="project" />
         </div>
     </BreezeAuthenticatedLayout>
 </template>
