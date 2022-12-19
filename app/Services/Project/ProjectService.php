@@ -2,17 +2,22 @@
 
 namespace App\Services\Project;
 
+use App\Enums\CacheKeysEnum;
 use App\Services\Project\Contracts\ProjectRepositoryContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\Project\Dtos\ProjectCreateDto;
 use App\Services\Project\Dtos\ProjectDto;
 use App\Services\Project\Dtos\ProjectUpdateDto;
+use Illuminate\Cache\Repository;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class ProjectService implements ProjectServiceContract
 {
     public function __construct(
-        private readonly ProjectRepositoryContract $projectRepository
+        private readonly ProjectRepositoryContract $projectRepository,
+        private readonly Repository $cacheService,
+        private readonly array $cacheTags,
+        private readonly int $cacheTtl
     ) {
     }
 
@@ -30,6 +35,8 @@ class ProjectService implements ProjectServiceContract
     public function update(Uuid $id, ProjectUpdateDto $projectUpdateDto): void
     {
         $this->projectRepository->update($id, $projectUpdateDto);
+
+        $this->cacheService->tags($this->cacheTags)->flush();
     }
 
     /**
@@ -38,6 +45,8 @@ class ProjectService implements ProjectServiceContract
     public function delete(Uuid $id): void
     {
         $this->projectRepository->delete($id);
+
+        $this->cacheService->tags($this->cacheTags)->flush();
     }
 
     /**
@@ -53,7 +62,11 @@ class ProjectService implements ProjectServiceContract
      */
     public function findAllByOwnerId(int $ownerId): array
     {
-        return $this->projectRepository->findAllByOwnerId($ownerId);
+        return $this->cacheService
+            ->tags($this->cacheTags)
+            ->remember(CacheKeysEnum::OWNER_PROJECTS->value . $ownerId, $this->cacheTtl, function () use ($ownerId) {
+                return $this->projectRepository->findAllByOwnerId($ownerId);
+            });
     }
 
     /**

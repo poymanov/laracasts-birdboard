@@ -41,6 +41,8 @@ services:
             - "5432:5432"
     redis:
         image: redis:7
+    memcached:
+        image: 'memcached:alpine'
     node-watch:
         build:
             context: ./docker/node
