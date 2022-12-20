@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Project\StoreRequest;
+use App\Http\Requests\Project\UpdateNotesRequest;
 use App\Http\Requests\Project\UpdateRequest;
 use App\Services\Project\Contracts\ProjectCreateDtoFactoryContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
@@ -155,6 +156,31 @@ class ProjectController extends Controller
             return Inertia::render('Project/Show', ['project' => $projectDto]);
         } catch (ProjectNotFoundException $e) {
             abort(Response::HTTP_NOT_FOUND);
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
+     * @param string             $id
+     * @param UpdateNotesRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function updateNotes(string $id, UpdateNotesRequest $request)
+    {
+        $projectId = Uuid::make($id);
+
+        $this->checkBelongsToUser($projectId);
+
+        try {
+            $this->projectService->updateNotes($projectId, $request->get('notes'));
+
+            return redirect()->route('projects.show', $projectId)->with('alert.success', 'Project notes was updated');
+        } catch (ProjectUpdateFailedException $e) {
+            return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
             Log::error($e);
 

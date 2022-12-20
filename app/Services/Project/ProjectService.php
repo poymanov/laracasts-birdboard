@@ -76,4 +76,14 @@ class ProjectService implements ProjectServiceContract
     {
         return $this->projectRepository->findOneById($id);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function updateNotes(Uuid $id, string $notes): void
+    {
+        $this->projectRepository->updateNotes($id, $notes);
+
+        $this->cacheService->tags($this->cacheTags)->flush();
+    }
 }

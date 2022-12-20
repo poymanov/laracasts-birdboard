@@ -72,4 +72,16 @@ interface ProjectServiceContract
      * @throws ProjectNotFoundException
      */
     public function findOneById(Uuid $id): ProjectDto;
+
+    /**
+     * Обновление заметок проекта
+     *
+     * @param Uuid   $id
+     * @param string $notes
+     *
+     * @return void
+     * @throws ProjectNotFoundException
+     * @throws ProjectUpdateFailedException
+     */
+    public function updateNotes(Uuid $id, string $notes): void;
 }

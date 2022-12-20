@@ -16,7 +16,7 @@ class ProjectDto
 
     public string $description;
 
-    public string $notes;
+    public ?string $notes;
 
     public ?DateTime $createdAt;
 

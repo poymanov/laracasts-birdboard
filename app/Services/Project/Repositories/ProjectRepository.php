@@ -89,6 +89,19 @@ class ProjectRepository implements ProjectRepositoryContract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function updateNotes(Uuid $id, string $notes): void
+    {
+        $project        = $this->findModelById($id);
+        $project->notes = $notes;
+
+        if (!$project->save()) {
+            throw new ProjectUpdateFailedException($id);
+        }
+    }
+
+    /**
      * Получение модели по ID
      *
      * @param Uuid $id

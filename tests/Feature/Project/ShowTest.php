@@ -22,5 +22,5 @@ test('success', function () {
 
     $this
         ->get(routeBuilderHelper()->project->show($project->id))
-        ->assertInertia(fn (Assert $page) => $page->where('project.title', $project->title));
+        ->assertInertia(fn (Assert $page) => $page->where('project.title', $project->title)->where('project.notes', $project->notes));
 });

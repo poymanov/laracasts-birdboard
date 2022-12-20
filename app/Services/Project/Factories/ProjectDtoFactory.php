@@ -21,6 +21,7 @@ class ProjectDtoFactory implements ProjectDtoFactoryContract
         $projectDto->title            = $project->title;
         $projectDto->shortDescription = Str::limit($project->description);
         $projectDto->description      = $project->description;
+        $projectDto->notes            = $project->notes;
         $projectDto->createdAt        = $project->created_at?->toDateTime();
         $projectDto->updateAt         = $project->updated_at?->toDateTime();
 

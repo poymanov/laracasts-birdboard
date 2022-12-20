@@ -59,4 +59,14 @@ class ProjectBuilder
     {
         return '/projects/' . $id . '/edit';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function updateNotes(string $id): string
+    {
+        return '/projects/' . $id . '/update-notes';
+    }
 }
