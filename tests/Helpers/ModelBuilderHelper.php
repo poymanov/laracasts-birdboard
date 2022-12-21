@@ -3,19 +3,22 @@
 namespace Tests\Helpers;
 
 use Tests\Helpers\ModelBuilder\ProjectBuilder;
+use Tests\Helpers\ModelBuilder\TaskBuilder;
 use Tests\Helpers\ModelBuilder\UserBuilder;
 
 class ModelBuilderHelper
 {
     private static ?ModelBuilderHelper $instance = null;
 
-    public UserBuilder $user;
+    public UserBuilder    $user;
     public ProjectBuilder $project;
+    public TaskBuilder    $task;
 
     private function __construct()
     {
-        $this->user = new UserBuilder();
+        $this->user    = new UserBuilder();
         $this->project = new ProjectBuilder();
+        $this->task = new TaskBuilder();
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers\ProjectServiceProvider;
+use App\Providers\TaskServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -196,6 +197,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         ProjectServiceProvider::class,
+        TaskServiceProvider::class
     ],
 
     /*

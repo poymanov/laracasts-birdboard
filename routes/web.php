@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +53,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::patch('{id}', 'update')->name('update');
         Route::delete('{id}', 'destroy')->name('destroy');
         Route::patch('{id}/update-notes', 'updateNotes')->name('update-notes');
+    });
+
+    Route::group([
+        'prefix'     => 'tasks',
+        'as'         => 'tasks.',
+        'controller' => TaskController::class,
+    ], function () {
+        Route::post('', 'store')->name('store');
     });
 });
 
