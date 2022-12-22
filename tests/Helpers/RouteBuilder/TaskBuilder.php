@@ -11,4 +11,14 @@ class TaskBuilder
     {
         return '/tasks';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function update(string $id): string
+    {
+        return '/tasks/' . $id;
+    }
 }

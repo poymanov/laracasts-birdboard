@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         'controller' => TaskController::class,
     ], function () {
         Route::post('', 'store')->name('store');
+        Route::patch('{id}', 'update')->name('update');
     });
 });
 
