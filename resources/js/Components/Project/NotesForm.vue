@@ -20,7 +20,7 @@ let submit = () => {
         <textarea
             name="notes"
             v-model="form.notes"
-            class="card text-default w-full mb-2"
+            class="card bg-white p-5 rounded-lg shadow flex border-0 flex-col text-default w-full mb-2"
             style="min-height: 200px"
             placeholder="Anything special that you want to make a note of?">{{ project.notes }}
         </textarea>
