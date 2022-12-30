@@ -32,4 +32,13 @@ interface TaskServiceContract
      * @throws TaskNotBelongsToProject
      */
     public function update(Uuid $id, TaskUpdateDto $taskUpdateDto): void;
+
+    /**
+     * Получение списка задач по ID проекта
+     *
+     * @param Uuid $projectId
+     *
+     * @return array
+     */
+    public function findAllByProjectId(Uuid $projectId): array;
 }

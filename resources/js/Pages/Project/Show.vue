@@ -4,9 +4,11 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import NotesFrom from '@/Components/Project/NotesForm.vue';
 import Card from "@/Components/Project/Card.vue";
 import NewTaskForm from "@/Components/Task/NewForm.vue";
+import TasksList from "@/Components/Task/List.vue";
 
 const props = defineProps({
     project: Object,
+    tasks: Array
 });
 </script>
 
@@ -28,6 +30,8 @@ const props = defineProps({
                 <div class="lg:w-3/4 px-3 mb-6">
                     <div class="mb-8">
                         <h2 class="text-lg text-grey font-normal mb-3">Tasks</h2>
+
+                        <TasksList :tasks="tasks" />
 
                         <div class="card bg-white p-5 rounded-lg shadow flex flex-col mb-3">
                             <NewTaskForm :project="project"/>

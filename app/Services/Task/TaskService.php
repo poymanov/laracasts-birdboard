@@ -35,4 +35,12 @@ class TaskService implements TaskServiceContract
 
         $this->taskRepository->update($id, $taskUpdateDto);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByProjectId(Uuid $projectId): array
+    {
+        return $this->taskRepository->findAllByProjectId($projectId);
+    }
 }

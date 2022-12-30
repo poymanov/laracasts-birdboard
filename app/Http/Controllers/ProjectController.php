@@ -12,6 +12,7 @@ use App\Services\Project\Exceptions\ProjectCreateFailedException;
 use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
+use App\Services\Task\Contracts\TaskServiceContract;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -23,6 +24,7 @@ class ProjectController extends Controller
 {
     public function __construct(
         private readonly ProjectServiceContract $projectService,
+        private readonly TaskServiceContract $taskService,
         private readonly ProjectCreateDtoFactoryContract $projectCreateDtoFactoryContract,
         private readonly ProjectUpdateDtoFactoryContract $projectUpdateDtoFactoryContract
     ) {
@@ -151,9 +153,10 @@ class ProjectController extends Controller
         $projectId = Uuid::make($id);
 
         try {
-            $projectDto = $this->projectService->findOneById($projectId);
+            $project = $this->projectService->findOneById($projectId);
+            $tasks   = $this->taskService->findAllByProjectId($projectId);
 
-            return Inertia::render('Project/Show', ['project' => $projectDto]);
+            return Inertia::render('Project/Show', compact('project', 'tasks'));
         } catch (ProjectNotFoundException $e) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (Throwable $e) {

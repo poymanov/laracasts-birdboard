@@ -22,5 +22,24 @@ test('success', function () {
 
     $this
         ->get(routeBuilderHelper()->project->show($project->id))
-        ->assertInertia(fn (Assert $page) => $page->where('project.title', $project->title)->where('project.notes', $project->notes));
+        ->assertInertia(fn (Assert $page) => $page->where('project.title', $project->title)
+            ->where('project.notes', $project->notes)->has('tasks', 0));
+});
+
+/** Просмотр с задачами */
+test('with tasks', function () {
+    $project = modelBuilderHelper()->project->create();
+
+    $firstTask  = modelBuilderHelper()->task->create(['project_id' => $project->id]);
+    $secondTask = modelBuilderHelper()->task->create(['project_id' => $project->id]);
+
+    authHelper()->signIn();
+
+    $this->get(routeBuilderHelper()->project->show($project->id))->assertInertia(
+        fn (Assert $page) => $page->has('tasks', 2)
+            ->where('tasks.0.id', $firstTask->id)
+            ->where('tasks.0.body', $firstTask->body)
+            ->where('tasks.1.id', $secondTask->id)
+            ->where('tasks.1.body', $secondTask->body)
+    );
 });

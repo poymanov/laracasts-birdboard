@@ -3,6 +3,7 @@
 namespace App\Services\Task\Repositories;
 
 use App\Models\Task;
+use App\Services\Task\Contracts\TaskDtoFactoryContract;
 use App\Services\Task\Contracts\TaskRepositoryContract;
 use App\Services\Task\Dtos\TaskCreateDto;
 use App\Services\Task\Dtos\TaskUpdateDto;
@@ -13,6 +14,10 @@ use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class TaskRepository implements TaskRepositoryContract
 {
+    public function __construct(private readonly TaskDtoFactoryContract $taskDtoFactory)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -42,16 +47,19 @@ class TaskRepository implements TaskRepositoryContract
     }
 
     /**
-     * Принадлежит ли задачу проекту
-     *
-     * @param Uuid $taskId
-     * @param Uuid $projectId
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isBelongsToProject(Uuid $taskId, Uuid $projectId): bool
     {
         return Task::where(['id' => $taskId->value(), 'project_id' => $projectId->value()])->exists();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByProjectId(Uuid $projectId): array
+    {
+        return $this->taskDtoFactory->createFromModelsList(Task::whereProjectId($projectId)->oldest('created_at')->get());
     }
 
     /**

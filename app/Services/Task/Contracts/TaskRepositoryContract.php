@@ -42,4 +42,13 @@ interface TaskRepositoryContract
      * @return bool
      */
     public function isBelongsToProject(Uuid $taskId, Uuid $projectId): bool;
+
+    /**
+     * Получение списка задач по ID проекта
+     *
+     * @param Uuid $projectId
+     *
+     * @return array
+     */
+    public function findAllByProjectId(Uuid $projectId): array;
 }

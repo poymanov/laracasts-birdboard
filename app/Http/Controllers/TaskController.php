@@ -72,7 +72,7 @@ class TaskController extends Controller
 
             $this->taskService->update($taskId, $taskUpdateDto);
 
-            return redirect()->route('projects.show', $projectId)->with('alert.success', 'Project was updated');
+            return redirect()->route('projects.show', $projectId)->with('alert.success', 'Task was updated');
         } catch (TaskNotBelongsToProject $e) {
             Log::error($e);
 
