@@ -12,6 +12,7 @@ use App\Services\Task\Factories\TaskDtoFactory;
 use App\Services\Task\Factories\TaskUpdateDtoFactory;
 use App\Services\Task\Repositories\TaskRepository;
 use App\Services\Task\TaskService;
+use Illuminate\Cache\Repository;
 use Illuminate\Support\ServiceProvider;
 
 class TaskServiceProvider extends ServiceProvider
@@ -28,6 +29,15 @@ class TaskServiceProvider extends ServiceProvider
         $this->app->singleton(TaskCreateDtoFactoryContract::class, TaskCreateDtoFactory::class);
         $this->app->singleton(TaskUpdateDtoFactoryContract::class, TaskUpdateDtoFactory::class);
         $this->app->singleton(TaskServiceContract::class, TaskService::class);
+
+        $this->app->singleton(
+            TaskServiceContract::class,
+            fn ($app) => new TaskService(
+                $app->make(TaskRepositoryContract::class),
+                $app->make(Repository::class),
+                config('cache-ttl.tasks')
+            )
+        );
     }
 
     /**
