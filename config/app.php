@@ -1,7 +1,9 @@
 <?php
 
+use App\Providers\ProjectInviteServiceProvider;
 use App\Providers\ProjectServiceProvider;
 use App\Providers\TaskServiceProvider;
+use App\Providers\UserServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -43,7 +45,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -197,7 +199,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         ProjectServiceProvider::class,
-        TaskServiceProvider::class
+        TaskServiceProvider::class,
+        UserServiceProvider::class,
+        ProjectInviteServiceProvider::class,
     ],
 
     /*

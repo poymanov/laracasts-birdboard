@@ -2,13 +2,12 @@
 
 namespace App\Services\Project\Dtos;
 
+use App\Services\User\Dtos\UserDto;
 use DateTime;
 
 class ProjectDto
 {
     public string $id;
-
-    public int $ownerId;
 
     public string $title;
 
@@ -17,6 +16,8 @@ class ProjectDto
     public string $description;
 
     public ?string $notes;
+
+    public UserDto $owner;
 
     public ?DateTime $createdAt;
 

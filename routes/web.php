@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectInviteController;
+use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +55,22 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::patch('{id}', 'update')->name('update');
         Route::delete('{id}', 'destroy')->name('destroy');
         Route::patch('{id}/update-notes', 'updateNotes')->name('update-notes');
+
+        Route::group([
+            'prefix'     => '{id}/invitations',
+            'as'         => 'invitations.',
+            'controller' => ProjectInviteController::class,
+        ], function () {
+            Route::post('', 'store')->name('store');
+        });
+
+        Route::group([
+            'prefix'     => '{id}/members',
+            'as'         => 'members.',
+            'controller' => ProjectMemberController::class,
+        ], function () {
+            Route::get('', 'index')->name('index');
+        });
     });
 
     Route::group([

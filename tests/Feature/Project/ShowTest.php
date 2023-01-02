@@ -16,9 +16,10 @@ test('guest', function () {
 
 /** Успешный просмотр */
 test('success', function () {
-    $project = modelBuilderHelper()->project->create();
+    $user    = modelBuilderHelper()->user->create();
+    $project = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
 
-    authHelper()->signIn();
+    authHelper()->signIn($user);
 
     $this
         ->get(routeBuilderHelper()->project->show($project->id))
