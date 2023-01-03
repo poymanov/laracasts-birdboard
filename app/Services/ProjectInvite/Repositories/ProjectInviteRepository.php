@@ -2,7 +2,9 @@
 
 namespace App\Services\ProjectInvite\Repositories;
 
+use App\Enums\ProjectInviteStatusEnum;
 use App\Models\ProjectInvite;
+use App\Services\ProjectInvite\Contracts\ProjectInviteDtoFactoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Dtos\ProjectInviteCreateDto;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteCreateFailedException;
@@ -10,6 +12,10 @@ use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class ProjectInviteRepository implements ProjectInviteRepositoryContract
 {
+    public function __construct(private readonly ProjectInviteDtoFactoryContract $inviteDtoFactory)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -31,5 +37,15 @@ class ProjectInviteRepository implements ProjectInviteRepositoryContract
         if (!$projectInvite->save()) {
             throw new ProjectInviteCreateFailedException();
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByUserIdAndStatus(int $userId, ProjectInviteStatusEnum $status): array
+    {
+        $invites = ProjectInvite::where(['user_id' => $userId, 'status' => $status->value])->latest('created_at')->get();
+
+        return $this->inviteDtoFactory->createFromModelsList($invites);
     }
 }

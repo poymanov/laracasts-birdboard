@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileInviteController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectInviteController;
 use App\Http\Controllers\ProjectMemberController;
@@ -41,6 +42,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('', 'edit')->name('edit');
         Route::patch('', 'update')->name('update');
         Route::delete('', 'destroy')->name('destroy');
+
+        Route::group([
+            'prefix'     => 'invitations',
+            'as'         => 'invitations.',
+            'controller' => ProfileInviteController::class,
+        ], function () {
+            Route::get('', 'index')->name('index');
+        });
     });
 
     Route::group([

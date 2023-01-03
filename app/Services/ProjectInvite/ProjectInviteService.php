@@ -2,6 +2,7 @@
 
 namespace App\Services\ProjectInvite;
 
+use App\Enums\ProjectInviteStatusEnum;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteServiceContract;
@@ -42,5 +43,13 @@ class ProjectInviteService implements ProjectInviteServiceContract
         $inviteCreateDto = $this->inviteCreateDtoFactory->createFromParams($projectId, $user->id);
 
         $this->inviteRepository->create($inviteCreateDto);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllSentByUserId(int $userId): array
+    {
+        return $this->inviteRepository->findAllByUserIdAndStatus($userId, ProjectInviteStatusEnum::SENT);
     }
 }
