@@ -7,6 +7,8 @@ use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteServiceContract;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteAlreadyException;
+use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectAnotherUserException;
+use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectWrongStatusException;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteSelfCreateException;
 use App\Services\ProjectInvite\Factories\ProjectInviteCreateDtoFactory;
 use App\Services\User\Contracts\UserServiceContract;
@@ -18,7 +20,7 @@ class ProjectInviteService implements ProjectInviteServiceContract
     public function __construct(
         private readonly ProjectServiceContract $projectService,
         private readonly UserServiceContract $userService,
-        private readonly ProjectInviteRepositoryContract $inviteRepository,
+        private readonly ProjectInviteRepositoryContract $projectInviteRepository,
         private readonly ProjectInviteCreateDtoFactory $inviteCreateDtoFactory
     ) {
     }
@@ -36,13 +38,13 @@ class ProjectInviteService implements ProjectInviteServiceContract
         }
 
         // Попытка приглашения уже приглашенного пользователя
-        if ($this->inviteRepository->isExistsByProjectIdAndUserId($projectId, $user->id)) {
+        if ($this->projectInviteRepository->isExistsByProjectIdAndUserId($projectId, $user->id)) {
             throw new ProjectInviteAlreadyException($email);
         }
 
         $inviteCreateDto = $this->inviteCreateDtoFactory->createFromParams($projectId, $user->id);
 
-        $this->inviteRepository->create($inviteCreateDto);
+        $this->projectInviteRepository->create($inviteCreateDto);
     }
 
     /**
@@ -50,6 +52,24 @@ class ProjectInviteService implements ProjectInviteServiceContract
      */
     public function findAllSentByUserId(int $userId): array
     {
-        return $this->inviteRepository->findAllByUserIdAndStatus($userId, ProjectInviteStatusEnum::SENT);
+        return $this->projectInviteRepository->findAllByUserIdAndStatus($userId, ProjectInviteStatusEnum::SENT);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function reject(Uuid $id, int $userId): void
+    {
+        // Попытка отклонения чужого приглашения
+        if (!$this->projectInviteRepository->isBelongsToUser($id, $userId)) {
+            throw new ProjectInviteRejectAnotherUserException();
+        }
+
+        // Попытка отклонения в неправильном статусе
+        if (!$this->projectInviteRepository->isStatus($id, ProjectInviteStatusEnum::SENT)) {
+            throw new ProjectInviteRejectWrongStatusException();
+        }
+
+        $this->projectInviteRepository->updateStatus($id, ProjectInviteStatusEnum::REJECTED);
     }
 }

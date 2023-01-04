@@ -8,6 +8,8 @@ use App\Services\ProjectInvite\Contracts\ProjectInviteDtoFactoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Dtos\ProjectInviteCreateDto;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteCreateFailedException;
+use App\Services\ProjectInvite\Exceptions\ProjectInviteNotFoundException;
+use App\Services\ProjectInvite\Exceptions\ProjectInviteUpdateStatusFailedException;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
 class ProjectInviteRepository implements ProjectInviteRepositoryContract
@@ -47,5 +49,53 @@ class ProjectInviteRepository implements ProjectInviteRepositoryContract
         $invites = ProjectInvite::where(['user_id' => $userId, 'status' => $status->value])->latest('created_at')->get();
 
         return $this->inviteDtoFactory->createFromModelsList($invites);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function updateStatus(Uuid $id, ProjectInviteStatusEnum $status): void
+    {
+        $projectInvite         = $this->findModelById($id);
+        $projectInvite->status = $status->value;
+
+        if (!$projectInvite->save()) {
+            throw new ProjectInviteUpdateStatusFailedException($projectInvite->id);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isStatus(Uuid $id, ProjectInviteStatusEnum $status): bool
+    {
+        return ProjectInvite::where(['id' => $id->value(), 'status' => $status->value])->exists();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isBelongsToUser(Uuid $id, int $userId): bool
+    {
+        return ProjectInvite::where(['id' => $id->value(), 'user_id' => $userId])->exists();
+    }
+
+    /**
+     * Получение модели по ID
+     *
+     * @param Uuid $id
+     *
+     * @return ProjectInvite
+     * @throws ProjectInviteNotFoundException
+     */
+    private function findModelById(Uuid $id): ProjectInvite
+    {
+        $projectInvite = ProjectInvite::find($id->value());
+
+        if (!$projectInvite) {
+            throw new ProjectInviteNotFoundException($id->value());
+        }
+
+        return $projectInvite;
     }
 }

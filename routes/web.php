@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             'controller' => ProfileInviteController::class,
         ], function () {
             Route::get('', 'index')->name('index');
+            Route::delete('{id}/reject', 'reject')->name('reject');
         });
     });
 
