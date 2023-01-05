@@ -37,6 +37,9 @@ import { Link } from '@inertiajs/inertia-vue3';
                                         <BreezeDropdownLink :href="route('profile.edit')" as="button">
                                             Profile
                                         </BreezeDropdownLink>
+                                        <BreezeDropdownLink :href="route('profile.invitations.index')" as="button">
+                                            Invitations
+                                        </BreezeDropdownLink>
                                         <BreezeDropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </BreezeDropdownLink>

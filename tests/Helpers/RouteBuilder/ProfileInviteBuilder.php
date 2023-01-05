@@ -21,4 +21,14 @@ class ProfileInviteBuilder
     {
         return '/profile/invitations/' . $id . '/reject';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function accept(string $id): string
+    {
+        return '/profile/invitations/' . $id . '/accept';
+    }
 }

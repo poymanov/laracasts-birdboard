@@ -34,6 +34,16 @@ interface ProjectInviteRepositoryContract
     public function create(ProjectInviteCreateDto $inviteCreateDto): void;
 
     /**
+     * Получение приглашения по ID
+     *
+     * @param Uuid $id
+     *
+     * @return ProjectInviteDto
+     * @throws ProjectInviteNotFoundException
+     */
+    public function findOneById(Uuid $id): ProjectInviteDto;
+
+    /**
      * Получение приглашений пользователя по статусу
      *
      * @param int                     $userId

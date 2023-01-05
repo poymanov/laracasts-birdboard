@@ -11,10 +11,12 @@ use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectAnotherUserExceptio
 use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectWrongStatusException;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteSelfCreateException;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteUpdateStatusFailedException;
+use App\Services\ProjectMember\Exceptions\ProjectMemberCreateFailedException;
 use App\Services\User\Exceptions\UserNotFoundByEmailException;
 use Exception;
 use MichaelRubel\ValueObjects\Collection\Complex\Email;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
+use Throwable;
 
 interface ProjectInviteServiceContract
 {
@@ -44,7 +46,7 @@ interface ProjectInviteServiceContract
     public function findAllSentByUserId(int $userId): array;
 
     /**
-     * Отклонение предложения
+     * Отклонение заявки
      *
      * @param Uuid $id
      * @param int  $userId
@@ -56,4 +58,20 @@ interface ProjectInviteServiceContract
      * @throws ProjectInviteRejectWrongStatusException
      */
     public function reject(Uuid $id, int $userId): void;
+
+    /**
+     * Принятие заявки
+     *
+     * @param Uuid $id
+     * @param int  $userId
+     *
+     * @return void
+     * @throws ProjectInviteNotFoundException
+     * @throws ProjectInviteUpdateStatusFailedException
+     * @throws ProjectInviteRejectAnotherUserException
+     * @throws ProjectInviteRejectWrongStatusException
+     * @throws Throwable
+     * @throws ProjectMemberCreateFailedException
+     */
+    public function accept(Uuid $id, int $userId): void;
 }

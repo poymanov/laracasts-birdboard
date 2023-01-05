@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers\ProjectInviteServiceProvider;
+use App\Providers\ProjectMemberServiceProvider;
 use App\Providers\ProjectServiceProvider;
 use App\Providers\TaskServiceProvider;
 use App\Providers\UserServiceProvider;
@@ -202,6 +203,7 @@ return [
         TaskServiceProvider::class,
         UserServiceProvider::class,
         ProjectInviteServiceProvider::class,
+        ProjectMemberServiceProvider::class,
     ],
 
     /*
