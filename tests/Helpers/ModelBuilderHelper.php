@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use Tests\Helpers\ModelBuilder\ProjectBuilder;
 use Tests\Helpers\ModelBuilder\ProjectInviteBuilder;
+use Tests\Helpers\ModelBuilder\ProjectMemberBuilder;
 use Tests\Helpers\ModelBuilder\TaskBuilder;
 use Tests\Helpers\ModelBuilder\UserBuilder;
 
@@ -15,6 +16,7 @@ class ModelBuilderHelper
     public ProjectBuilder       $project;
     public TaskBuilder          $task;
     public ProjectInviteBuilder $projectInvite;
+    public ProjectMemberBuilder $projectMember;
 
     private function __construct()
     {
@@ -22,6 +24,7 @@ class ModelBuilderHelper
         $this->project       = new ProjectBuilder();
         $this->task          = new TaskBuilder();
         $this->projectInvite = new ProjectInviteBuilder();
+        $this->projectMember = new ProjectMemberBuilder();
     }
 
     /**

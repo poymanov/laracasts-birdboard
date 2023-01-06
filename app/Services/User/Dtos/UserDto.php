@@ -7,4 +7,6 @@ class UserDto
     public int $id;
 
     public string $email;
+
+    public string $name;
 }

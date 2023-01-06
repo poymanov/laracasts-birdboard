@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectInviteStatusEnum;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,6 +22,7 @@ class ProjectInviteFactory extends Factory
         return [
             'project_id' => Project::factory(),
             'user_id'    => User::factory(),
+            'status'     => ProjectInviteStatusEnum::SENT->value,
         ];
     }
 }

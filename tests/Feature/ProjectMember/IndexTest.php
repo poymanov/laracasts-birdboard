@@ -37,12 +37,17 @@ test('not exists', function () {
 
 /** Успешный просмотр */
 test('success', function () {
-    $user    = modelBuilderHelper()->user->create();
-    $project = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
+    $user          = modelBuilderHelper()->user->create();
+    $project       = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
+    $projectMember = modelBuilderHelper()->projectMember->create(['project_id' => $project->id]);
 
     authHelper()->signIn($user);
 
     $this
         ->get(routeBuilderHelper()->member->index($project->id))
-        ->assertInertia(fn (Assert $page) => $page->where('project.title', $project->title));
+        ->assertInertia(
+            fn (Assert $page) => $page->where('project.title', $project->title)
+                ->has('members', 1)
+                ->where('members.0.user.name', $projectMember->user->name)
+        );
 });

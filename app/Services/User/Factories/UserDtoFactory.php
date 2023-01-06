@@ -16,6 +16,7 @@ class UserDtoFactory implements UserDtoFactoryContract
         $userDto        = new UserDto();
         $userDto->id    = $user->id;
         $userDto->email = $user->email;
+        $userDto->name  = $user->name;
 
         return $userDto;
     }

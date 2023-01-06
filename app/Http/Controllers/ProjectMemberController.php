@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
+use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -13,7 +14,8 @@ use Throwable;
 class ProjectMemberController extends Controller
 {
     public function __construct(
-        private readonly ProjectServiceContract $projectService
+        private readonly ProjectServiceContract $projectService,
+        private readonly ProjectMemberServiceContract $projectMemberService
     ) {
     }
 
@@ -29,8 +31,9 @@ class ProjectMemberController extends Controller
 
         try {
             $project = $this->projectService->findOneById($projectId);
+            $members = $this->projectMemberService->findAllByProjectId($projectId);
 
-            return Inertia::render('Member/Index', ['project' => $project]);
+            return Inertia::render('Member/Index', compact('project', 'members'));
         } catch (ProjectNotFoundException $e) {
             return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
