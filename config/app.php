@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\NotificationServiceProvider;
 use App\Providers\ProjectInviteServiceProvider;
 use App\Providers\ProjectMemberServiceProvider;
 use App\Providers\ProjectServiceProvider;
@@ -204,6 +205,7 @@ return [
         UserServiceProvider::class,
         ProjectInviteServiceProvider::class,
         ProjectMemberServiceProvider::class,
+        NotificationServiceProvider::class,
     ],
 
     /*

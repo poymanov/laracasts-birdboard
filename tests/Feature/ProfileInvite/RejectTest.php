@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ProjectInviteStatusEnum;
+use App\Services\ProjectInvite\Notifications\RejectInvite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Faker\faker;
@@ -61,8 +62,16 @@ test('accepted status', function () {
 
 /** Приглашение отклонено */
 test('success', function () {
-    $user   = modelBuilderHelper()->user->create();
-    $invite = modelBuilderHelper()->projectInvite->create(['user_id' => $user->id, 'status' => ProjectInviteStatusEnum::SENT]);
+    Notification::fake();
+
+    $projectOwner = modelBuilderHelper()->user->create();
+    $project      = modelBuilderHelper()->project->create(['owner_id' => $projectOwner->id]);
+    $user         = modelBuilderHelper()->user->create();
+    $invite       = modelBuilderHelper()->projectInvite->create([
+        'project_id' => $project->id,
+        'user_id'    => $user->id,
+        'status'     => ProjectInviteStatusEnum::SENT,
+    ]);
 
     authHelper()->signIn($user);
 
@@ -74,4 +83,6 @@ test('success', function () {
         'id'     => $invite->id,
         'status' => ProjectInviteStatusEnum::REJECTED->value,
     ]);
+
+    Notification::assertSentTo($projectOwner, RejectInvite::class);
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ProjectInviteStatusEnum;
+use App\Services\ProjectInvite\Notifications\NewInvite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Faker\faker;
@@ -108,6 +109,8 @@ test('already', function () {
 
 /** Успешное создание приглашения */
 test('success', function () {
+    Notification::fake();
+
     $user         = modelBuilderHelper()->user->create();
     $userToInvite = modelBuilderHelper()->user->create();
     $project      = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
@@ -122,4 +125,6 @@ test('success', function () {
         'user_id'    => $userToInvite->id,
         'status'     => ProjectInviteStatusEnum::SENT->value,
     ]);
+
+    Notification::assertSentTo($userToInvite, NewInvite::class);
 });

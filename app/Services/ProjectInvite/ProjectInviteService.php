@@ -3,6 +3,7 @@
 namespace App\Services\ProjectInvite;
 
 use App\Enums\ProjectInviteStatusEnum;
+use App\Services\Notification\Contracts\NotificationServiceContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteServiceContract;
@@ -12,6 +13,9 @@ use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectAnotherUserExceptio
 use App\Services\ProjectInvite\Exceptions\ProjectInviteRejectWrongStatusException;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteSelfCreateException;
 use App\Services\ProjectInvite\Factories\ProjectInviteCreateDtoFactory;
+use App\Services\ProjectInvite\Notifications\AcceptInvite;
+use App\Services\ProjectInvite\Notifications\NewInvite;
+use App\Services\ProjectInvite\Notifications\RejectInvite;
 use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use App\Services\ProjectMember\Factories\ProjectMemberCreateDtoFactory;
 use App\Services\User\Contracts\UserServiceContract;
@@ -28,7 +32,8 @@ class ProjectInviteService implements ProjectInviteServiceContract
         private readonly ProjectInviteRepositoryContract $projectInviteRepository,
         private readonly ProjectInviteCreateDtoFactory $inviteCreateDtoFactory,
         private readonly ProjectMemberCreateDtoFactory $projectMemberCreateDtoFactory,
-        private readonly ProjectMemberServiceContract $projectMemberService
+        private readonly ProjectMemberServiceContract $projectMemberService,
+        private readonly NotificationServiceContract $notificationService
     ) {
     }
 
@@ -49,9 +54,26 @@ class ProjectInviteService implements ProjectInviteServiceContract
             throw new ProjectInviteAlreadyException($email);
         }
 
+        // Получение проекта
+        $project = $this->projectService->findOneById($projectId);
+
         $inviteCreateDto = $this->inviteCreateDtoFactory->createFromParams($projectId, $user->id);
 
-        $this->projectInviteRepository->create($inviteCreateDto);
+        DB::beginTransaction();
+
+        try {
+            // Создание приглашения
+            $this->projectInviteRepository->create($inviteCreateDto);
+
+            // Отправка уведомления приглашенному пользователю
+            $this->notificationService->mail($user->id, new NewInvite($project));
+
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollback();
+
+            throw new $exception();
+        }
     }
 
     /**
@@ -77,7 +99,23 @@ class ProjectInviteService implements ProjectInviteServiceContract
             throw new ProjectInviteRejectWrongStatusException();
         }
 
-        $this->projectInviteRepository->updateStatus($id, ProjectInviteStatusEnum::REJECTED);
+        $projectInvite = $this->projectInviteRepository->findOneById($id);
+
+        DB::beginTransaction();
+
+        try {
+            // Отклонение приглашения
+            $this->projectInviteRepository->updateStatus($id, ProjectInviteStatusEnum::REJECTED);
+
+            // Отправка уведомления владельцу проекта
+            $this->notificationService->mail($projectInvite->project->owner->id, new RejectInvite($projectInvite));
+
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollback();
+
+            throw new $exception();
+        }
     }
 
     /**
@@ -111,6 +149,9 @@ class ProjectInviteService implements ProjectInviteServiceContract
                 Uuid::make($projectInvite->id)
             );
             $this->projectMemberService->create($projectMemberCreateDto);
+
+            // Отправка уведомления владельцу проекта
+            $this->notificationService->mail($projectInvite->project->owner->id, new AcceptInvite($projectInvite));
 
             DB::commit();
         } catch (Throwable $exception) {
