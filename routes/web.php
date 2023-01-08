@@ -76,11 +76,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         });
 
         Route::group([
-            'prefix'     => '{id}/members',
+            'prefix'     => '{projectId}/members',
             'as'         => 'members.',
             'controller' => ProjectMemberController::class,
         ], function () {
             Route::get('', 'index')->name('index');
+            Route::delete('/{projectMemberId}', 'destroy')->name('destroy');
         });
     });
 

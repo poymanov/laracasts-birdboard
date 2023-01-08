@@ -31,4 +31,12 @@ class ProjectMember extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invite()
+    {
+        return $this->belongsTo(ProjectInvite::class, 'invite_id', 'id');
+    }
 }

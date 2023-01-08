@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Project\Contracts\ProjectServiceContract;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
+use App\Services\ProjectMember\Exceptions\ProjectMemberWrongMemberException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -20,13 +21,13 @@ class ProjectMemberController extends Controller
     }
 
     /**
-     * @param string $id
+     * @param string $projectId
      *
      * @return \Illuminate\Http\RedirectResponse|\Inertia\Response
      */
-    public function index(string $id)
+    public function index(string $projectId)
     {
-        $projectId = Uuid::make($id);
+        $projectId = Uuid::make($projectId);
         $this->checkProjectBelongsToUser($projectId);
 
         try {
@@ -40,6 +41,34 @@ class ProjectMemberController extends Controller
             Log::error($e);
 
             return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
+     * @param string $projectId
+     * @param string $projectMemberId
+     *
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
+    public function destroy(string $projectId, string $projectMemberId)
+    {
+        $projectId       = Uuid::make($projectId);
+        $projectMemberId = Uuid::make($projectMemberId);
+
+        $this->checkProjectBelongsToUser($projectId);
+
+        try {
+            $this->projectMemberService->delete($projectId, $projectMemberId);
+
+            return redirect()->route('projects.members.index', $projectId)->with('alert.success', 'Project member was deleted');
+        } catch (ProjectNotFoundException) {
+            abort(Response::HTTP_NOT_FOUND);
+        } catch (ProjectMemberWrongMemberException) {
+            abort(Response::HTTP_FORBIDDEN);
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('projects.members.index', $projectId)->with('alert.error', 'Something went wrong');
         }
     }
 

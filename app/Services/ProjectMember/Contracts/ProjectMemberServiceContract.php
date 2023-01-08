@@ -2,9 +2,11 @@
 
 namespace App\Services\ProjectMember\Contracts;
 
+use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\ProjectMember\Dtos\ProjectMemberCreateDto;
 use App\Services\ProjectMember\Dtos\ProjectMemberDto;
 use App\Services\ProjectMember\Exceptions\ProjectMemberCreateFailedException;
+use App\Services\ProjectMember\Exceptions\ProjectMemberWrongMemberException;
 use Exception;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
@@ -29,4 +31,16 @@ interface ProjectMemberServiceContract
      * @throws Exception
      */
     public function findAllByProjectId(Uuid $projectId): array;
+
+    /**
+     * Удаление участника проекта
+     *
+     * @param Uuid $projectId
+     * @param Uuid $projectMemberId
+     *
+     * @return void
+     * @throws ProjectMemberWrongMemberException
+     * @throws ProjectNotFoundException
+     */
+    public function delete(Uuid $projectId, Uuid $projectMemberId): void;
 }

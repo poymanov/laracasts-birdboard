@@ -13,4 +13,15 @@ class ProjectMemberBuilder
     {
         return '/projects/' . $projectId . '/members';
     }
+
+    /**
+     * @param string $projectId
+     * @param string $memberId
+     *
+     * @return string
+     */
+    public function delete(string $projectId, string $memberId): string
+    {
+        return '/projects/' . $projectId . '/members/' . $memberId;
+    }
 }
