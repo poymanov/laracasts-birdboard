@@ -29,12 +29,13 @@ test('success', function () {
 
 /** Просмотр с задачами */
 test('with tasks', function () {
-    $project = modelBuilderHelper()->project->create();
+    $user    = modelBuilderHelper()->user->create();
+    $project = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
 
     $firstTask  = modelBuilderHelper()->task->create(['project_id' => $project->id]);
     $secondTask = modelBuilderHelper()->task->create(['project_id' => $project->id]);
 
-    authHelper()->signIn();
+    authHelper()->signIn($user);
 
     $this->get(routeBuilderHelper()->project->show($project->id))->assertInertia(
         fn (Assert $page) => $page->has('tasks', 2)

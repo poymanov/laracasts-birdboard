@@ -31,10 +31,11 @@ test('not existed project', function () {
 
 /** Успешное создание */
 test('success', function () {
-    authHelper()->signIn();
-
-    $project  = modelBuilderHelper()->project->create();
+    $user = modelBuilderHelper()->user->create();
+    $project  = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
     $taskData = modelBuilderHelper()->task->make(['project_id' => $project->id]);
+
+    authHelper()->signIn($user);
 
     $this
         ->post(routeBuilderHelper()->task->store(), $taskData->toArray())

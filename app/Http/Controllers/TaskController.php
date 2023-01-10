@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Task\StoreRequest;
 use App\Http\Requests\Task\UpdateRequest;
 use App\Services\Project\Contracts\ProjectServiceContract;
+use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use App\Services\Task\Contracts\TaskCreateDtoFactoryContract;
 use App\Services\Task\Contracts\TaskServiceContract;
 use App\Services\Task\Contracts\TaskUpdateDtoFactoryContract;
@@ -23,6 +24,7 @@ class TaskController extends Controller
         private readonly TaskCreateDtoFactoryContract $taskCreateDtoFactory,
         private readonly TaskUpdateDtoFactoryContract $taskUpdateDtoFactory,
         private readonly ProjectServiceContract $projectService,
+        private readonly ProjectMemberServiceContract $projectMemberService
     ) {
     }
 
@@ -33,9 +35,18 @@ class TaskController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $projectId     = Uuid::make($request->get('project_id'));
+        $currentUserId = (int)auth()->id();
+
+        $isMember = $this->projectMemberService->isProjectMember($currentUserId, $projectId);
+        $isOwner  = $this->projectService->isBelongsToUser($currentUserId, $projectId);
+
+        if (!$isMember && !$isOwner) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         try {
-            $projectId = Uuid::make($request->get('project_id'));
-            $body      = $request->get('body');
+            $body = $request->get('body');
 
             $taskCreateDto = $this->taskCreateDtoFactory->createFromParams($projectId, $body);
 
@@ -62,7 +73,12 @@ class TaskController extends Controller
         $projectId = Uuid::make($request->get('project_id'));
         $taskId    = Uuid::make($id);
 
-        $this->checkProjectBelongsToUser($projectId);
+        $currentUserId = (int)auth()->id();
+
+        $isMember = $this->projectMemberService->isProjectMember($currentUserId, $projectId);
+        $isOwner  = $this->projectService->isBelongsToUser($currentUserId, $projectId);
+
+        $this->checkUserHaveAccessToProject($isOwner, $isMember);
 
         try {
             $body      = $request->get('body');
@@ -87,13 +103,14 @@ class TaskController extends Controller
     }
 
     /**
-     * @param Uuid $projectId
+     * @param bool $isOwner
+     * @param bool $isMember
      *
      * @return void
      */
-    private function checkProjectBelongsToUser(Uuid $projectId): void
+    private function checkUserHaveAccessToProject(bool $isOwner, bool $isMember): void
     {
-        if (!$this->projectService->isBelongsToUser((int)auth()->id(), $projectId)) {
+        if (!$isMember && !$isOwner) {
             abort(Response::HTTP_FORBIDDEN);
         }
     }

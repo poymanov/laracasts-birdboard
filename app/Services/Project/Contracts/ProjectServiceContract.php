@@ -57,11 +57,11 @@ interface ProjectServiceContract
     public function isBelongsToUser(int $userId, Uuid $projectId): bool;
 
     /**
-     * Получение списка проектов по ID владельца
+     * Получение списка проектов, где пользователь является владельцем или участником
      *
      * @return ProjectDto[]
      */
-    public function findAllByOwnerId(int $ownerId): array;
+    public function findAllByUserId(int $userId): array;
 
     /**
      * Получение DTO объекта по id

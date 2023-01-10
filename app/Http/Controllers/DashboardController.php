@@ -16,7 +16,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $projects = $this->projectService->findAllByOwnerId((int) auth()->id());
+        $projects = $this->projectService->findAllByUserId((int) auth()->id());
 
         return Inertia::render('Dashboard', compact('projects'));
     }

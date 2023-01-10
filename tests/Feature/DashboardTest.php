@@ -34,7 +34,7 @@ test('with one project', function () {
 
     authHelper()->signIn($user);
 
-    $firstProject  = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
+    $firstProject = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
 
     $this->get(routeBuilderHelper()->common->dashboard())->assertInertia(
         fn (Assert $page) => $page->has('projects', 1)
@@ -51,7 +51,7 @@ test('sort last updated', function () {
     authHelper()->signIn($user);
 
     $firstProject  = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
-    $secondProject  = modelBuilderHelper()->project->create(['owner_id' => $user->id, 'updated_at' => Carbon::now()->addMinute()]);
+    $secondProject = modelBuilderHelper()->project->create(['owner_id' => $user->id, 'updated_at' => Carbon::now()->addMinute()]);
 
     $this->get(routeBuilderHelper()->common->dashboard())->assertInertia(
         fn (Assert $page) => $page->has('projects', 2)
@@ -61,5 +61,22 @@ test('sort last updated', function () {
             ->where('projects.1.id', $firstProject->id)
             ->where('projects.1.title', $firstProject->title)
             ->where('projects.1.shortDescription', Str::limit($firstProject->description))
+    );
+});
+
+/** Отображение проекта, в котором пользователь является участником */
+test('member', function () {
+    $user    = modelBuilderHelper()->user->create();
+    $project = modelBuilderHelper()->project->create();
+
+    modelBuilderHelper()->projectMember->create(['user_id' => $user->id, 'project_id' => $project->id]);
+
+    authHelper()->signIn($user);
+
+    $this->get(routeBuilderHelper()->common->dashboard())->assertInertia(
+        fn (Assert $page) => $page->has('projects', 1)
+            ->where('projects.0.id', $project->id)
+            ->where('projects.0.title', $project->title)
+            ->where('projects.0.shortDescription', Str::limit($project->description))
     );
 });

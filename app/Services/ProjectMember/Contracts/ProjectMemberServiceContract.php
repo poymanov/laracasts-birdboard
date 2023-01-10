@@ -43,4 +43,14 @@ interface ProjectMemberServiceContract
      * @throws ProjectNotFoundException
      */
     public function delete(Uuid $projectId, Uuid $projectMemberId): void;
+
+    /**
+     * Является ли пользователь участником проекта
+     *
+     * @param int  $userId
+     * @param Uuid $projectId
+     *
+     * @return bool
+     */
+    public function isProjectMember(int $userId, Uuid $projectId): bool;
 }

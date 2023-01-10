@@ -23,4 +23,12 @@ class Project extends Model
     {
         return $this->hasOne(User::class, 'id', 'owner_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function members()
+    {
+        return $this->hasMany(ProjectMember::class, 'project_id', 'id');
+    }
 }

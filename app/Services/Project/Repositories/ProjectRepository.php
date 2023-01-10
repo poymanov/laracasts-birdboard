@@ -72,12 +72,14 @@ class ProjectRepository implements ProjectRepositoryContract
     /**
      * @inheritDoc
      */
-    public function findAllByOwnerId(int $ownerId): array
+    public function findAllByUserId(int $userId): array
     {
-        return $this->projectDtoFactory
-            ->createFromModelsList(
-                Project::whereOwnerId($ownerId)->latest('updated_at')->get()
-            );
+        $projects = Project::where('owner_id', $userId)
+            ->orWhereHas('members', fn ($query) => $query->where('user_id', $userId))
+            ->latest('updated_at')
+            ->get();
+
+        return $this->projectDtoFactory->createFromModelsList($projects);
     }
 
     /**

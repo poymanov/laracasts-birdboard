@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum CacheKeysEnum: string
 {
-    case OWNER_PROJECTS = 'owner-projects-';
+    case USER_PROJECTS = 'user-projects-';
 
     case PROJECT_TASKS = 'project-tasks-';
 }

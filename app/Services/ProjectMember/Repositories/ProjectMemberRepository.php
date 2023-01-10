@@ -71,19 +71,24 @@ class ProjectMemberRepository implements ProjectMemberRepositoryContract
         } catch (Throwable $exception) {
             DB::rollback();
 
-            throw new $exception();
+            throw $exception;
         }
     }
 
     /**
-     * @param Uuid $id
-     * @param Uuid $projectId
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isBelongsToProject(Uuid $id, Uuid $projectId): bool
     {
         return ProjectMember::where(['id' => $id->value(), 'project_id' => $projectId->value()])->exists();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isProjectMember(int $userId, Uuid $projectId): bool
+    {
+        return ProjectMember::where(['user_id' => $userId, 'project_id' => $projectId->value()])->exists();
     }
 
     /**

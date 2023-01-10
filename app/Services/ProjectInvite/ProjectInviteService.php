@@ -2,6 +2,7 @@
 
 namespace App\Services\ProjectInvite;
 
+use App\Enums\CacheKeysEnum;
 use App\Enums\ProjectInviteStatusEnum;
 use App\Services\Notification\Contracts\NotificationServiceContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
@@ -19,6 +20,7 @@ use App\Services\ProjectInvite\Notifications\RejectInvite;
 use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use App\Services\ProjectMember\Factories\ProjectMemberCreateDtoFactory;
 use App\Services\User\Contracts\UserServiceContract;
+use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 use MichaelRubel\ValueObjects\Collection\Complex\Email;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
@@ -33,7 +35,9 @@ class ProjectInviteService implements ProjectInviteServiceContract
         private readonly ProjectInviteCreateDtoFactory $inviteCreateDtoFactory,
         private readonly ProjectMemberCreateDtoFactory $projectMemberCreateDtoFactory,
         private readonly ProjectMemberServiceContract $projectMemberService,
-        private readonly NotificationServiceContract $notificationService
+        private readonly NotificationServiceContract $notificationService,
+        private readonly Repository $cacheService,
+        private readonly array $cacheTags,
     ) {
     }
 
@@ -72,7 +76,7 @@ class ProjectInviteService implements ProjectInviteServiceContract
         } catch (Throwable $exception) {
             DB::rollback();
 
-            throw new $exception();
+            throw $exception;
         }
     }
 
@@ -114,7 +118,7 @@ class ProjectInviteService implements ProjectInviteServiceContract
         } catch (Throwable $exception) {
             DB::rollback();
 
-            throw new $exception();
+            throw $exception;
         }
     }
 
@@ -153,11 +157,16 @@ class ProjectInviteService implements ProjectInviteServiceContract
             // Отправка уведомления владельцу проекта
             $this->notificationService->mail($projectInvite->project->owner->id, new AcceptInvite($projectInvite));
 
+            // Удаление кэша проектов участника проекта
+            $this->cacheService
+                ->tags($this->cacheTags)
+                ->delete(CacheKeysEnum::USER_PROJECTS->value . $projectInvite->user->id);
+
             DB::commit();
         } catch (Throwable $exception) {
             DB::rollback();
 
-            throw new $exception();
+            throw $exception;
         }
     }
 }

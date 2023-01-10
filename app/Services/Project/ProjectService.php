@@ -60,12 +60,12 @@ class ProjectService implements ProjectServiceContract
     /**
      * @inheritDoc
      */
-    public function findAllByOwnerId(int $ownerId): array
+    public function findAllByUserId(int $userId): array
     {
         return $this->cacheService
             ->tags($this->cacheTags)
-            ->remember(CacheKeysEnum::OWNER_PROJECTS->value . $ownerId, $this->cacheTtl, function () use ($ownerId) {
-                return $this->projectRepository->findAllByOwnerId($ownerId);
+            ->remember(CacheKeysEnum::USER_PROJECTS->value . $userId, $this->cacheTtl, function () use ($userId) {
+                return $this->projectRepository->findAllByUserId($userId);
             });
     }
 

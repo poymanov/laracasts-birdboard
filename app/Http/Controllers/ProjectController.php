@@ -12,6 +12,7 @@ use App\Services\Project\Exceptions\ProjectCreateFailedException;
 use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
+use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use App\Services\Task\Contracts\TaskServiceContract;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -26,7 +27,8 @@ class ProjectController extends Controller
         private readonly ProjectServiceContract $projectService,
         private readonly TaskServiceContract $taskService,
         private readonly ProjectCreateDtoFactoryContract $projectCreateDtoFactoryContract,
-        private readonly ProjectUpdateDtoFactoryContract $projectUpdateDtoFactoryContract
+        private readonly ProjectUpdateDtoFactoryContract $projectUpdateDtoFactoryContract,
+        private readonly ProjectMemberServiceContract $projectMemberService
     ) {
     }
 
@@ -150,14 +152,21 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
+        $currentUserId = (int)auth()->id();
+
         $projectId = Uuid::make($id);
+
+        $isMember = $this->projectMemberService->isProjectMember($currentUserId, $projectId);
+        $isOwner  = $this->projectService->isBelongsToUser($currentUserId, $projectId);
+
+        $this->checkUserHaveAccessToProject($isOwner, $isMember);
 
         try {
             $project = $this->projectService->findOneById($projectId);
             $tasks   = $this->taskService->findAllByProjectId($projectId);
 
-            return Inertia::render('Project/Show', compact('project', 'tasks'));
-        } catch (ProjectNotFoundException $e) {
+            return Inertia::render('Project/Show', compact('project', 'tasks', 'isOwner'));
+        } catch (ProjectNotFoundException) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (Throwable $e) {
             Log::error($e);
@@ -176,7 +185,12 @@ class ProjectController extends Controller
     {
         $projectId = Uuid::make($id);
 
-        $this->checkBelongsToUser($projectId);
+        $currentUserId = (int)auth()->id();
+
+        $isMember = $this->projectMemberService->isProjectMember($currentUserId, $projectId);
+        $isOwner  = $this->projectService->isBelongsToUser($currentUserId, $projectId);
+
+        $this->checkUserHaveAccessToProject($isOwner, $isMember);
 
         try {
             $this->projectService->updateNotes($projectId, $request->get('notes'));
@@ -199,6 +213,19 @@ class ProjectController extends Controller
     private function checkBelongsToUser(Uuid $projectId): void
     {
         if (!$this->projectService->isBelongsToUser((int)auth()->id(), $projectId)) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+    }
+
+    /**
+     * @param bool $isOwner
+     * @param bool $isMember
+     *
+     * @return void
+     */
+    private function checkUserHaveAccessToProject(bool $isOwner, bool $isMember): void
+    {
+        if (!$isMember && !$isOwner) {
             abort(Response::HTTP_FORBIDDEN);
         }
     }

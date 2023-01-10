@@ -54,7 +54,7 @@ interface ProjectMemberRepositoryContract
 
     /**
      *
-     * Принадлежит ли участник проекту
+     * Принадлежит ли запись об участнике проекту
      *
      * @param Uuid $id
      * @param Uuid $projectId
@@ -62,4 +62,14 @@ interface ProjectMemberRepositoryContract
      * @return bool
      */
     public function isBelongsToProject(Uuid $id, Uuid $projectId): bool;
+
+    /**
+     * Является ли пользователь участником проекта
+     *
+     * @param int  $userId
+     * @param Uuid $projectId
+     *
+     * @return bool
+     */
+    public function isProjectMember(int $userId, Uuid $projectId): bool;
 }
