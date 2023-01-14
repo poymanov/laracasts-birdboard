@@ -6,6 +6,7 @@ use App\Enums\CacheKeysEnum;
 use App\Enums\ProjectInviteStatusEnum;
 use App\Services\Notification\Contracts\NotificationServiceContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteRepositoryContract;
 use App\Services\ProjectInvite\Contracts\ProjectInviteServiceContract;
 use App\Services\ProjectInvite\Exceptions\ProjectInviteAcceptAnotherUserException;
@@ -36,6 +37,7 @@ class ProjectInviteService implements ProjectInviteServiceContract
         private readonly ProjectMemberCreateDtoFactory $projectMemberCreateDtoFactory,
         private readonly ProjectMemberServiceContract $projectMemberService,
         private readonly NotificationServiceContract $notificationService,
+        private readonly ProjectActivityServiceContract $projectActivityService,
         private readonly Repository $cacheService,
         private readonly array $cacheTags,
     ) {
@@ -156,6 +158,9 @@ class ProjectInviteService implements ProjectInviteServiceContract
 
             // Отправка уведомления владельцу проекта
             $this->notificationService->mail($projectInvite->project->owner->id, new AcceptInvite($projectInvite));
+
+            // Добавление активности проекта
+            $this->projectActivityService->createNewMember($projectInvite->user->id, Uuid::make($projectInvite->project->id));
 
             // Удаление кэша проектов участника проекта
             $this->cacheService

@@ -50,7 +50,7 @@ class TaskController extends Controller
 
             $taskCreateDto = $this->taskCreateDtoFactory->createFromParams($projectId, $body);
 
-            $this->taskService->create($taskCreateDto);
+            $this->taskService->create((int)auth()->id(), $taskCreateDto);
 
             return redirect()->route('projects.show', $projectId->value())->with('alert.success', 'Task was created');
         } catch (TaskCreateFailedException $e) {
@@ -86,7 +86,7 @@ class TaskController extends Controller
 
             $taskUpdateDto = $this->taskUpdateDtoFactory->createFromParams($body, $completed, $projectId);
 
-            $this->taskService->update($taskId, $taskUpdateDto);
+            $this->taskService->update($taskId, (int)auth()->id(), $taskUpdateDto);
 
             return redirect()->route('projects.show', $projectId)->with('alert.success', 'Task was updated');
         } catch (TaskNotBelongsToProject $e) {

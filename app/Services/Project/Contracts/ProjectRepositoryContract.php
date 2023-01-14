@@ -16,10 +16,10 @@ interface ProjectRepositoryContract
     /**
      * @param ProjectCreateDto $projectCreateDto
      *
-     * @return void
+     * @return string
      * @throws ProjectCreateFailedException
      */
-    public function create(ProjectCreateDto $projectCreateDto): void;
+    public function create(ProjectCreateDto $projectCreateDto): string;
 
     /**
      * Обновление проекта

@@ -5,6 +5,7 @@ namespace App\Services\ProjectMember;
 use App\Enums\CacheKeysEnum;
 use App\Services\Notification\Contracts\NotificationServiceContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use App\Services\ProjectInvite\Notifications\DeleteMember;
 use App\Services\ProjectMember\Contracts\ProjectMemberRepositoryContract;
 use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
@@ -21,6 +22,7 @@ class ProjectMemberService implements ProjectMemberServiceContract
         private readonly ProjectMemberRepositoryContract $projectMemberRepository,
         private readonly ProjectServiceContract $projectService,
         private readonly NotificationServiceContract $notificationService,
+        private readonly ProjectActivityServiceContract $projectActivityService,
         private readonly Repository $cacheService,
         private readonly array $cacheTags,
     ) {
@@ -54,7 +56,7 @@ class ProjectMemberService implements ProjectMemberServiceContract
         }
 
         $projectMember = $this->projectMemberRepository->findOneById($projectMemberId);
-        $project = $this->projectService->findOneById($projectId);
+        $project       = $this->projectService->findOneById($projectId);
 
         DB::beginTransaction();
 
@@ -64,6 +66,9 @@ class ProjectMemberService implements ProjectMemberServiceContract
 
             // Отправка ему почтового уведомления
             $this->notificationService->mail($projectMember->user->id, new DeleteMember($project));
+
+            // Создание активности проекта
+            $this->projectActivityService->createDeleteMember($projectMember->user->id, $projectId);
 
             // Удаление кэша проектов участника проекта
             $this->cacheService

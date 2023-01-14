@@ -90,4 +90,22 @@ test('success', function () {
         'title'       => $updateProjectData->title,
         'description' => $updateProjectData->description,
     ]);
+
+    $this->assertDatabaseCount('project_activities', 2);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id'    => $user->id,
+        'project_id' => $project->id,
+        'type'       => 'update_project_title',
+        'old_value'  => $project->title,
+        'new_value'  => $updateProjectData->title,
+    ]);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id'    => $user->id,
+        'project_id' => $project->id,
+        'type'       => 'update_project_description',
+        'old_value'  => $project->description,
+        'new_value'  => $updateProjectData->description,
+    ]);
 });

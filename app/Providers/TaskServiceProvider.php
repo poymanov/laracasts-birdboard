@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use App\Services\Task\Contracts\TaskCreateDtoFactoryContract;
 use App\Services\Task\Contracts\TaskDtoFactoryContract;
 use App\Services\Task\Contracts\TaskRepositoryContract;
@@ -32,9 +33,10 @@ class TaskServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             TaskServiceContract::class,
-            fn ($app) => new TaskService(
-                $app->make(TaskRepositoryContract::class),
-                $app->make(Repository::class),
+            fn () => new TaskService(
+                $this->app->make(TaskRepositoryContract::class),
+                $this->app->make(ProjectActivityServiceContract::class),
+                $this->app->make(Repository::class),
                 config('cache-ttl.tasks')
             )
         );

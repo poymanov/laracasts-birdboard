@@ -45,4 +45,13 @@ test('success', function () {
         'project_id' => $project->id,
         'body'       => $taskData->body,
     ]);
+
+    $this->assertDatabaseCount('project_activities', 1);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id'    => $user->id,
+        'project_id' => $project->id,
+        'type'       => 'create_task',
+        'new_value'  => $taskData->body,
+    ]);
 });

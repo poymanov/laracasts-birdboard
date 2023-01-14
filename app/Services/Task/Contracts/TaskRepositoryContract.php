@@ -3,6 +3,7 @@
 namespace App\Services\Task\Contracts;
 
 use App\Services\Task\Dtos\TaskCreateDto;
+use App\Services\Task\Dtos\TaskDto;
 use App\Services\Task\Dtos\TaskUpdateDto;
 use App\Services\Task\Exceptions\TaskCreateFailedException;
 use App\Services\Task\Exceptions\TaskNotFoundException;
@@ -16,10 +17,10 @@ interface TaskRepositoryContract
      *
      * @param TaskCreateDto $taskCreateDto
      *
-     * @return void
+     * @return string
      * @throws TaskCreateFailedException
      */
-    public function create(TaskCreateDto $taskCreateDto): void;
+    public function create(TaskCreateDto $taskCreateDto): string;
 
     /**
      * Изменение задачи
@@ -51,4 +52,14 @@ interface TaskRepositoryContract
      * @return array
      */
     public function findAllByProjectId(Uuid $projectId): array;
+
+    /**
+     * Получение DTO объекта по ID
+     *
+     * @param Uuid $id
+     *
+     * @return TaskDto
+     * @throws TaskNotFoundException
+     */
+    public function findOneById(Uuid $id): TaskDto;
 }

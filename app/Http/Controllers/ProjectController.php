@@ -97,7 +97,7 @@ class ProjectController extends Controller
         try {
             $projectUpdateDto = $this->projectUpdateDtoFactoryContract->createFromParams($request->get('title'), $request->get('description'));
 
-            $this->projectService->update($projectId, $projectUpdateDto);
+            $this->projectService->update($projectId, (int)auth()->id(), $projectUpdateDto);
 
             return redirect()->route('projects.show', $id)->with('alert.success', 'Project was updated');
         } catch (ProjectNotFoundException) {
@@ -193,7 +193,7 @@ class ProjectController extends Controller
         $this->checkUserHaveAccessToProject($isOwner, $isMember);
 
         try {
-            $this->projectService->updateNotes($projectId, $request->get('notes'));
+            $this->projectService->updateNotes($projectId, (int)auth()->id(), $request->get('notes'));
 
             return redirect()->route('projects.show', $projectId)->with('alert.success', 'Project notes was updated');
         } catch (ProjectUpdateFailedException $e) {

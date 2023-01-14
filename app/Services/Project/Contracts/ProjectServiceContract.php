@@ -33,7 +33,7 @@ interface ProjectServiceContract
      * @throws ProjectNotFoundException
      * @throws ProjectUpdateFailedException
      */
-    public function update(Uuid $id, ProjectUpdateDto $projectUpdateDto): void;
+    public function update(Uuid $id, int $userId, ProjectUpdateDto $projectUpdateDto): void;
 
     /**
      * Удаление проекта
@@ -83,5 +83,5 @@ interface ProjectServiceContract
      * @throws ProjectNotFoundException
      * @throws ProjectUpdateFailedException
      */
-    public function updateNotes(Uuid $id, string $notes): void;
+    public function updateNotes(Uuid $id, int $userId, string $notes): void;
 }

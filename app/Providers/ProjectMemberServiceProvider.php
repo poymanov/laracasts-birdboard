@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Enums\CacheTagsEnum;
 use App\Services\Notification\Contracts\NotificationServiceContract;
 use App\Services\Project\Contracts\ProjectServiceContract;
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use App\Services\ProjectMember\Contracts\ProjectMemberCreateDtoFactoryContract;
 use App\Services\ProjectMember\Contracts\ProjectMemberDtoFactoryContract;
 use App\Services\ProjectMember\Contracts\ProjectMemberRepositoryContract;
@@ -34,6 +35,7 @@ class ProjectMemberServiceProvider extends ServiceProvider
                 $this->app->make(ProjectMemberRepositoryContract::class),
                 $this->app->make(ProjectServiceContract::class),
                 $this->app->make(NotificationServiceContract::class),
+                $this->app->make(ProjectActivityServiceContract::class),
                 $this->app->make(Repository::class),
                 [CacheTagsEnum::PROJECTS->value],
             );

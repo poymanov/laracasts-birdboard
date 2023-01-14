@@ -88,5 +88,13 @@ test('success', function () {
         'deleted_at' => null,
     ]);
 
+    $this->assertDatabaseCount('project_activities', 1);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id'    => $projectMember->user->id,
+        'project_id' => $project->id,
+        'type'       => 'delete_member',
+    ]);
+
     Notification::assertSentTo($userMember, DeleteMember::class);
 });

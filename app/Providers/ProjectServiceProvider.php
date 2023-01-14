@@ -13,6 +13,7 @@ use App\Services\Project\Factories\ProjectDtoFactory;
 use App\Services\Project\Factories\ProjectUpdateDtoFactory;
 use App\Services\Project\ProjectService;
 use App\Services\Project\Repositories\ProjectRepository;
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +34,7 @@ class ProjectServiceProvider extends ServiceProvider
             return new ProjectService(
                 $this->app->make(ProjectRepositoryContract::class),
                 $this->app->make(Repository::class),
+                $this->app->make(ProjectActivityServiceContract::class),
                 [CacheTagsEnum::PROJECTS->value],
                 config('cache-ttl.projects')
             );

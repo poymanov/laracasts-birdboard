@@ -14,12 +14,13 @@ interface TaskServiceContract
     /**
      * Создание задачи
      *
+     * @param int           $userId
      * @param TaskCreateDto $taskCreateDto
      *
      * @return void
      * @throws TaskCreateFailedException
      */
-    public function create(TaskCreateDto $taskCreateDto): void;
+    public function create(int $userId, TaskCreateDto $taskCreateDto): void;
 
     /**
      * Создание задачи
@@ -31,7 +32,7 @@ interface TaskServiceContract
      * @throws TaskUpdateFailedException
      * @throws TaskNotBelongsToProject
      */
-    public function update(Uuid $id, TaskUpdateDto $taskUpdateDto): void;
+    public function update(Uuid $id, int $userId, TaskUpdateDto $taskUpdateDto): void;
 
     /**
      * Получение списка задач по ID проекта

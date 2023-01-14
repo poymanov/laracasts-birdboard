@@ -52,7 +52,8 @@ test('failed', function () {
 
 /** Успешное создание */
 test('success', function () {
-    authHelper()->signIn();
+    $user = modelBuilderHelper()->user->create();
+    authHelper()->signIn($user);
 
     $projectData = modelBuilderHelper()->project->make();
 
@@ -64,5 +65,12 @@ test('success', function () {
     $this->assertDatabaseHas('projects', [
         'title'       => $projectData->title,
         'description' => $projectData->description,
+    ]);
+
+    $this->assertDatabaseCount('project_activities', 1);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id' => $user->id,
+        'type'    => 'create_project',
     ]);
 });

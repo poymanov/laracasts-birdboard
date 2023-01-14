@@ -23,7 +23,7 @@ class ProjectRepository implements ProjectRepositoryContract
     /**
      * @inheritDoc
      */
-    public function create(ProjectCreateDto $projectCreateDto): void
+    public function create(ProjectCreateDto $projectCreateDto): string
     {
         $project              = new Project();
         $project->title       = $projectCreateDto->title;
@@ -33,6 +33,10 @@ class ProjectRepository implements ProjectRepositoryContract
         if (!$project->save()) {
             throw new ProjectCreateFailedException();
         }
+
+        $project->refresh();
+
+        return $project->id;
     }
 
     /**

@@ -90,5 +90,13 @@ test('success', function () {
         'invite_id'  => $invite->id,
     ]);
 
+    $this->assertDatabaseCount('project_activities', 1);
+
+    $this->assertDatabaseHas('project_activities', [
+        'user_id'    => $user->id,
+        'project_id' => $project->id,
+        'type'       => 'new_member',
+    ]);
+
     Notification::assertSentTo($projectOwner, AcceptInvite::class);
 });
