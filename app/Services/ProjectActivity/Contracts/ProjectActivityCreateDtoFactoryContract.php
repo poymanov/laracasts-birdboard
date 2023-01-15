@@ -56,22 +56,24 @@ interface ProjectActivityCreateDtoFactoryContract
     /**
      * Создание активности типа "Завершение задачи"
      *
-     * @param int  $userId
-     * @param Uuid $projectId
+     * @param int    $userId
+     * @param Uuid   $projectId
+     * @param string $taskBody
      *
      * @return ProjectActivityCreateDto
      */
-    public function createCompleteTask(int $userId, Uuid $projectId): ProjectActivityCreateDto;
+    public function createCompleteTask(int $userId, Uuid $projectId, string $taskBody): ProjectActivityCreateDto;
 
     /**
      * Создание активности типа "Отмена завершения задачи"
      *
-     * @param int  $userId
-     * @param Uuid $projectId
+     * @param int    $userId
+     * @param Uuid   $projectId
+     * @param string $taskBody
      *
      * @return ProjectActivityCreateDto
      */
-    public function createIncompleteTask(int $userId, Uuid $projectId): ProjectActivityCreateDto;
+    public function createIncompleteTask(int $userId, Uuid $projectId, string $taskBody): ProjectActivityCreateDto;
 
     /**
      * Создание активности типа "Добавление нового участника"

@@ -97,6 +97,7 @@ test('success complete', function () {
         'user_id'    => $user->id,
         'project_id' => $project->id,
         'type'       => 'complete_task',
+        'old_value'  => $task->body,
     ]);
 });
 
@@ -125,5 +126,6 @@ test('success incomplete', function () {
         'user_id'    => $user->id,
         'project_id' => $project->id,
         'type'       => 'incomplete_task',
+        'old_value'  => $task->body,
     ]);
 });

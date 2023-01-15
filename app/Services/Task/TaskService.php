@@ -68,9 +68,9 @@ class TaskService implements TaskServiceContract
 
             if ($task->completed !== $taskUpdateDto->completed) {
                 if ($taskUpdateDto->completed) {
-                    $this->projectActivityService->createCompleteTask($userId, $taskUpdateDto->projectId);
+                    $this->projectActivityService->createCompleteTask($userId, $taskUpdateDto->projectId, $task->body);
                 } else {
-                    $this->projectActivityService->createIncompleteTask($userId, $taskUpdateDto->projectId);
+                    $this->projectActivityService->createIncompleteTask($userId, $taskUpdateDto->projectId, $task->body);
                 }
             }
 

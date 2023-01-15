@@ -2,6 +2,7 @@
 
 namespace App\Services\ProjectActivity\Contracts;
 
+use App\Services\ProjectActivity\Dtos\ProjectActivityDto;
 use App\Services\ProjectActivity\Exceptions\ProjectActivityCreateFailedException;
 use MichaelRubel\ValueObjects\Collection\Complex\Uuid;
 
@@ -60,24 +61,26 @@ interface ProjectActivityServiceContract
     /**
      * Создание активности "Завершение задачи"
      *
-     * @param int  $userId
-     * @param Uuid $projectId
+     * @param int    $userId
+     * @param Uuid   $projectId
+     * @param string $taskBody
      *
      * @return void
      * @throws ProjectActivityCreateFailedException
      */
-    public function createCompleteTask(int $userId, Uuid $projectId): void;
+    public function createCompleteTask(int $userId, Uuid $projectId, string $taskBody): void;
 
     /**
      * Создание активности "Отмена завершения задачи"
      *
-     * @param int  $userId
-     * @param Uuid $projectId
+     * @param int    $userId
+     * @param Uuid   $projectId
+     * @param string $taskBody
      *
      * @return void
      * @throws ProjectActivityCreateFailedException
      */
-    public function createIncompleteTask(int $userId, Uuid $projectId): void;
+    public function createIncompleteTask(int $userId, Uuid $projectId, string $taskBody): void;
 
     /**
      * Создание активности "Добавление нового участника"
@@ -100,4 +103,13 @@ interface ProjectActivityServiceContract
      * @throws ProjectActivityCreateFailedException
      */
     public function createDeleteMember(int $userId, Uuid $projectId): void;
+
+    /**
+     * Получение списка активностей по ID проекта
+     *
+     * @param Uuid $projectId
+     *
+     * @return ProjectActivityDto[]
+     */
+    public function findAllByProjectId(Uuid $projectId): array;
 }

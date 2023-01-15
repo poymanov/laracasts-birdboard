@@ -11,7 +11,8 @@ class ProjectActivityService implements ProjectActivityServiceContract
 {
     public function __construct(
         private readonly ProjectActivityCreateDtoFactoryContract $projectActivityCreateDtoFactory,
-        private readonly ProjectActivityRepositoryContract $projectActivityRepository
+        private readonly ProjectActivityRepositoryContract $projectActivityRepository,
+        private readonly int $activitiesLimit
     ) {
     }
 
@@ -54,18 +55,18 @@ class ProjectActivityService implements ProjectActivityServiceContract
     /**
      * @inheritDoc
      */
-    public function createCompleteTask(int $userId, Uuid $projectId): void
+    public function createCompleteTask(int $userId, Uuid $projectId, string $taskBody): void
     {
-        $projectActivityCreateDto = $this->projectActivityCreateDtoFactory->createCompleteTask($userId, $projectId);
+        $projectActivityCreateDto = $this->projectActivityCreateDtoFactory->createCompleteTask($userId, $projectId, $taskBody);
         $this->projectActivityRepository->create($projectActivityCreateDto);
     }
 
     /**
      * @inheritDoc
      */
-    public function createIncompleteTask(int $userId, Uuid $projectId): void
+    public function createIncompleteTask(int $userId, Uuid $projectId, string $taskBody): void
     {
-        $projectActivityCreateDto = $this->projectActivityCreateDtoFactory->createIncompleteTask($userId, $projectId);
+        $projectActivityCreateDto = $this->projectActivityCreateDtoFactory->createIncompleteTask($userId, $projectId, $taskBody);
         $this->projectActivityRepository->create($projectActivityCreateDto);
     }
 
@@ -85,5 +86,13 @@ class ProjectActivityService implements ProjectActivityServiceContract
     {
         $projectActivityCreateDto = $this->projectActivityCreateDtoFactory->createDeleteMember($userId, $projectId);
         $this->projectActivityRepository->create($projectActivityCreateDto);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAllByProjectId(Uuid $projectId): array
+    {
+        return $this->projectActivityRepository->findAllByProjectId($projectId, $this->activitiesLimit);
     }
 }

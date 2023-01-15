@@ -64,7 +64,7 @@ class TaskRepository implements TaskRepositoryContract
      */
     public function findAllByProjectId(Uuid $projectId): array
     {
-        return $this->taskDtoFactory->createFromModelsList(Task::whereProjectId($projectId)->oldest('created_at')->get());
+        return $this->taskDtoFactory->createFromModelsList(Task::whereProjectId($projectId)->oldest()->get());
     }
 
     /**

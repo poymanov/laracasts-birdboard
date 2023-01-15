@@ -2,6 +2,7 @@
 
 namespace Tests\Helpers;
 
+use Tests\Helpers\ModelBuilder\ProjectActivityBuilder;
 use Tests\Helpers\ModelBuilder\ProjectBuilder;
 use Tests\Helpers\ModelBuilder\ProjectInviteBuilder;
 use Tests\Helpers\ModelBuilder\ProjectMemberBuilder;
@@ -12,19 +13,21 @@ class ModelBuilderHelper
 {
     private static ?ModelBuilderHelper $instance = null;
 
-    public UserBuilder          $user;
-    public ProjectBuilder       $project;
-    public TaskBuilder          $task;
-    public ProjectInviteBuilder $projectInvite;
-    public ProjectMemberBuilder $projectMember;
+    public UserBuilder            $user;
+    public ProjectBuilder         $project;
+    public TaskBuilder            $task;
+    public ProjectInviteBuilder   $projectInvite;
+    public ProjectMemberBuilder   $projectMember;
+    public ProjectActivityBuilder $projectActivity;
 
     private function __construct()
     {
-        $this->user          = new UserBuilder();
-        $this->project       = new ProjectBuilder();
-        $this->task          = new TaskBuilder();
-        $this->projectInvite = new ProjectInviteBuilder();
-        $this->projectMember = new ProjectMemberBuilder();
+        $this->user            = new UserBuilder();
+        $this->project         = new ProjectBuilder();
+        $this->task            = new TaskBuilder();
+        $this->projectInvite   = new ProjectInviteBuilder();
+        $this->projectMember   = new ProjectMemberBuilder();
+        $this->projectActivity = new ProjectActivityBuilder();
     }
 
     /**

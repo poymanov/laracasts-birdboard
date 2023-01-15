@@ -69,12 +69,13 @@ class ProjectActivityCreateDtoFactory implements ProjectActivityCreateDtoFactory
     /**
      * @inheritDoc
      */
-    public function createCompleteTask(int $userId, Uuid $projectId): ProjectActivityCreateDto
+    public function createCompleteTask(int $userId, Uuid $projectId, string $taskBody): ProjectActivityCreateDto
     {
         $projectActivityCreateDto            = new ProjectActivityCreateDto();
         $projectActivityCreateDto->userId    = $userId;
         $projectActivityCreateDto->projectId = $projectId;
         $projectActivityCreateDto->type      = ProjectActivityTypeEnum::COMPLETE_TASK->value;
+        $projectActivityCreateDto->oldValue  = $taskBody;
 
         return $projectActivityCreateDto;
     }
@@ -82,12 +83,13 @@ class ProjectActivityCreateDtoFactory implements ProjectActivityCreateDtoFactory
     /**
      * @inheritDoc
      */
-    public function createIncompleteTask(int $userId, Uuid $projectId): ProjectActivityCreateDto
+    public function createIncompleteTask(int $userId, Uuid $projectId, string $taskBody): ProjectActivityCreateDto
     {
         $projectActivityCreateDto            = new ProjectActivityCreateDto();
         $projectActivityCreateDto->userId    = $userId;
         $projectActivityCreateDto->projectId = $projectId;
         $projectActivityCreateDto->type      = ProjectActivityTypeEnum::INCOMPLETE_TASK->value;
+        $projectActivityCreateDto->oldValue  = $taskBody;
 
         return $projectActivityCreateDto;
     }

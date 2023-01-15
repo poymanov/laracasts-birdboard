@@ -2,14 +2,16 @@
 import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, Link} from '@inertiajs/inertia-vue3';
 import NotesFrom from '@/Components/Project/NotesForm.vue';
-import Card from "@/Components/Project/Card.vue";
+import ProjectCard from "@/Components/Project/Card.vue";
+import ActivityCard from "@/Components/Activity/Card.vue";
 import NewTaskForm from "@/Components/Task/NewForm.vue";
 import TasksList from "@/Components/Task/List.vue";
 
 const props = defineProps({
     project: Object,
     tasks: Array,
-    isOwner: Boolean
+    isOwner: Boolean,
+    activities: Array
 });
 </script>
 
@@ -48,7 +50,8 @@ const props = defineProps({
                     </div>
                 </div>
                 <div class="lg:w-1/4 px-3 lg:py-8">
-                    <Card :project="project"/>
+                    <ProjectCard :project="project"/>
+                    <ActivityCard :activities="activities"/>
                 </div>
             </div>
         </main>

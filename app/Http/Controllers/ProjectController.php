@@ -12,6 +12,7 @@ use App\Services\Project\Exceptions\ProjectCreateFailedException;
 use App\Services\Project\Exceptions\ProjectDeleteFailedException;
 use App\Services\Project\Exceptions\ProjectNotFoundException;
 use App\Services\Project\Exceptions\ProjectUpdateFailedException;
+use App\Services\ProjectActivity\Contracts\ProjectActivityServiceContract;
 use App\Services\ProjectMember\Contracts\ProjectMemberServiceContract;
 use App\Services\Task\Contracts\TaskServiceContract;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +29,8 @@ class ProjectController extends Controller
         private readonly TaskServiceContract $taskService,
         private readonly ProjectCreateDtoFactoryContract $projectCreateDtoFactoryContract,
         private readonly ProjectUpdateDtoFactoryContract $projectUpdateDtoFactoryContract,
-        private readonly ProjectMemberServiceContract $projectMemberService
+        private readonly ProjectMemberServiceContract $projectMemberService,
+        private readonly ProjectActivityServiceContract $projectActivityService
     ) {
     }
 
@@ -162,10 +164,11 @@ class ProjectController extends Controller
         $this->checkUserHaveAccessToProject($isOwner, $isMember);
 
         try {
-            $project = $this->projectService->findOneById($projectId);
-            $tasks   = $this->taskService->findAllByProjectId($projectId);
+            $project    = $this->projectService->findOneById($projectId);
+            $tasks      = $this->taskService->findAllByProjectId($projectId);
+            $activities = $this->projectActivityService->findAllByProjectId($projectId);
 
-            return Inertia::render('Project/Show', compact('project', 'tasks', 'isOwner'));
+            return Inertia::render('Project/Show', compact('project', 'tasks', 'isOwner', 'activities'));
         } catch (ProjectNotFoundException) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (Throwable $e) {
