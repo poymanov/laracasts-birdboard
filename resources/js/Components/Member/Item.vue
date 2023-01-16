@@ -1,6 +1,7 @@
 <script setup>
 
 import {Inertia} from "@inertiajs/inertia";
+import AvatarItem from "@/Components/MemberAvatar/Item.vue";
 
 const props = defineProps({
     member: Object
@@ -15,8 +16,11 @@ let deleteMember = () => {
 </script>
 
 <template>
-    <div class="flex justify-between">
-        <div>
+    <div class="flex items-center">
+        <div class="mr-3 mt-2">
+            <AvatarItem :url="member.user.gravatarUrl" :memberName="member.user.name" />
+        </div>
+        <div class="mr-auto">
             {{ member.user.name }}
         </div>
         <div>

@@ -167,8 +167,12 @@ class ProjectController extends Controller
             $project    = $this->projectService->findOneById($projectId);
             $tasks      = $this->taskService->findAllByProjectId($projectId);
             $activities = $this->projectActivityService->findAllByProjectId($projectId);
+            $members    = $this->projectMemberService->findAllByProjectId($projectId);
 
-            return Inertia::render('Project/Show', compact('project', 'tasks', 'isOwner', 'activities'));
+            return Inertia::render(
+                'Project/Show',
+                compact('project', 'tasks', 'isOwner', 'activities', 'members')
+            );
         } catch (ProjectNotFoundException) {
             abort(Response::HTTP_NOT_FOUND);
         } catch (Throwable $e) {

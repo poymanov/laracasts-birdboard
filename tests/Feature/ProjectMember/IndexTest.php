@@ -38,8 +38,9 @@ test('not exists', function () {
 /** Успешный просмотр */
 test('success', function () {
     $user          = modelBuilderHelper()->user->create();
+    $userMember    = modelBuilderHelper()->user->create(['email' => 'test@test.ru']);
     $project       = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
-    $projectMember = modelBuilderHelper()->projectMember->create(['project_id' => $project->id]);
+    $projectMember = modelBuilderHelper()->projectMember->create(['project_id' => $project->id, 'user_id' => $userMember->id]);
 
     authHelper()->signIn($user);
 
@@ -49,5 +50,6 @@ test('success', function () {
             fn (Assert $page) => $page->where('project.title', $project->title)
                 ->has('members', 1)
                 ->where('members.0.user.name', $projectMember->user->name)
+                ->where('members.0.user.gravatarUrl', 'https://gravatar.com/avatar/cbc4c5829ca103f23a20b31dbf953d05?s=60')
         );
 });

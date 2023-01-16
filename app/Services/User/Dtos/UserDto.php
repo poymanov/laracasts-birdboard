@@ -9,4 +9,6 @@ class UserDto
     public string $email;
 
     public string $name;
+
+    public string $gravatarUrl;
 }

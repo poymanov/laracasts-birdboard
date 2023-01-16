@@ -45,3 +45,18 @@ test('with tasks', function () {
             ->where('tasks.1.body', $secondTask->body)
     );
 });
+
+/** Просмотр с участниками */
+test('with members', function () {
+    $user       = modelBuilderHelper()->user->create();
+    $userMember = modelBuilderHelper()->user->create(['email' => 'test@test.ru']);
+    $project    = modelBuilderHelper()->project->create(['owner_id' => $user->id]);
+    modelBuilderHelper()->projectMember->create(['project_id' => $project->id, 'user_id' => $userMember->id]);
+
+    authHelper()->signIn($user);
+
+    $this->get(routeBuilderHelper()->project->show($project->id))->assertInertia(
+        fn (Assert $page) => $page->has('members', 1)
+            ->where('members.0.user.gravatarUrl', 'https://gravatar.com/avatar/cbc4c5829ca103f23a20b31dbf953d05?s=60')
+    );
+});

@@ -6,12 +6,14 @@ import ProjectCard from "@/Components/Project/Card.vue";
 import ActivityCard from "@/Components/Activity/Card.vue";
 import NewTaskForm from "@/Components/Task/NewForm.vue";
 import TasksList from "@/Components/Task/List.vue";
+import AvatarList from "@/Components/MemberAvatar/List.vue";
 
 const props = defineProps({
     project: Object,
     tasks: Array,
     isOwner: Boolean,
-    activities: Array
+    activities: Array,
+    members: Array
 });
 </script>
 
@@ -20,11 +22,14 @@ const props = defineProps({
         <Head :title="project.title"/>
 
         <header class="flex items-center mb-6 pb-4 px-3">
-            <div class="flex justify-between items-end w-full">
-                <p class="text-muted font-light">
+            <div class="flex justify-between items-center w-full">
+                <p class="text-muted font-light mr-auto">
                     <Link :href="route('dashboard')" class="text-muted no-underline hover:underline">My Projects</Link>
                     / {{ project.title }}
                 </p>
+
+                <AvatarList :members="members" :project="project" />
+
                 <div>
                     <Link v-if="isOwner" :href="route('projects.members.index', project.id)" class="button bg-blue-400 text-white no-underline rounded-lg text-sm py-2 px-5 mr-2">Members</Link>
                     <Link v-if="isOwner" :href="route('projects.edit', project.id)" class="button bg-blue-400 text-white no-underline rounded-lg text-sm py-2 px-5">Edit Project</Link>
