@@ -38,6 +38,8 @@ class ProjectService implements ProjectServiceContract
             $this->projectActivityService->createCreateProject($projectCreateDto->ownerId, Uuid::make($projectId));
 
             DB::commit();
+
+            $this->cacheService->tags($this->cacheTags)->flush();
         } catch (Throwable $exception) {
             DB::rollback();
 
