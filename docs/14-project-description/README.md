@@ -8,4 +8,4 @@
 
 ---
 
-[<< Страница управления участниками](../13-edit-projects/README.md) | [Активности по проекту >>](../15-project-activities/README.md) | [**К оглавлению**](../README.md)
+[<< Редактирование проекта](../13-edit-project/README.md) | [Активности по проекту >>](../15-project-activities/README.md) | [**К оглавлению**](../README.md)
