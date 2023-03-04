@@ -11,3 +11,7 @@
 ![](img/01.png)
 
 Приложение создано в рамках курса [Build A Laravel App With TDD](https://laracasts.com/series/build-a-laravel-app-with-tdd).
+
+---
+
+[Запуск >>](../02-setup/README.md) | [**К оглавлению**](../README.md)

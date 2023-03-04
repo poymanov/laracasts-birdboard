@@ -13,3 +13,7 @@ make up
 ```
 make down
 ```
+
+---
+
+[<< Установка](../02-setup/README.md) | [Регистрация >> ](../04-registration/README.md) | [**К оглавлению**](../README.md)
