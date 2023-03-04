@@ -9,4 +9,4 @@ make init
 
 ---
 
-[<< Введение](../01-intro/README.md) | [Запуск >> ](../03-start/README.md) | [**К оглавлению**](../README.md)
+[<< Введение](../01-intro/README.md) | [Запуск >>](../03-start/README.md) | [**К оглавлению**](../README.md)
